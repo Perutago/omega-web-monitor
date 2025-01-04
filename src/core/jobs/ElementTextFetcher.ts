@@ -13,12 +13,12 @@ export default class ElementTextFetcher implements IFetcher {
         if (typeof response.data !== 'string') {
             throw new Error(i18n.__('Error.Unknown'));
         }
-        const element = libxmljs.parseHtmlString(response.data).get(this.setting.xpath);
+        const element = libxmljs.parseHtml(response.data).get(this.setting.xpath);
         if (!element) {
             throw new Error(i18n.__('Error.ElementNotFound'));
         }
         return element
-            .text()
+            .toString()
             .replace('\r', '')
             .replace('\n', '')
             .trim();
