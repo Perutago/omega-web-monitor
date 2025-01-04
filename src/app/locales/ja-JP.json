@@ -1,0 +1,14 @@
+{
+  "StandardOutput": "標準出力",
+  "Log.ElementNotUpdated": "%s 「%s」は更新されていません。",
+  "Error.ElementNotFound": "エレメントが見つかりません。",
+  "Error.FileNotFound": "%sが見つかりません。",
+  "Error.InvalidJobSetting": "JobSettingが不正です。",
+  "Error.NotExisted": "「%s」は存在しません。",
+  "Error.RegexNotMatched": "「%s」 にマッチしません。",
+  "Error.Required": "\"%s\" は必須です。",
+  "Error.Unknown": "未知のエラーが発生しました。",
+  "Notification.MonitoringStarted": "監視を開始しました。次回は約%s後にチェックされます。",
+  "Notification.WebSiteUpdated": "Webサイトが更新されました。次回は約%s後にチェックされます。",
+  "Empty": ""
+}

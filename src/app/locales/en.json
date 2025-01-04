@@ -1,0 +1,14 @@
+{
+  "StandardOutput": "standard output",
+  "Log.ElementNotUpdated": "%s \"%s\" is not updated.",
+  "Error.ElementNotFound": "element not found.",
+  "Error.FileNotFound": "%s not found.",
+  "Error.InvalidJobSetting": "Invalid job setting.",
+  "Error.NotExisted": "\"%s\" not existed.",
+  "Error.RegexNotMatched": "\"%s\" is not matched.",
+  "Error.Required": "\"%s\" is required.",
+  "Error.Unknown": "unknown error.",
+  "Notification.MonitoringStarted": "The monitoring has been started. Next time, it will be checked about %s later.",
+  "Notification.WebSiteUpdated": "The web site has been updated. Next time, it will be checked about %s later.",
+  "Empty": ""
+}
