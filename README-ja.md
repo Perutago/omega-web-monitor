@@ -2,7 +2,7 @@
 [English](https://github.com/Perutago/omega-web-monitor/blob/main/README.md)
 [日本語](https://github.com/Perutago/omega-web-monitor/blob/main/README-ja.md)
 
-## Summary
+## 概要
 
 ## run
 ./node_modules/.bin/ts-node --esm src/app/app.ts

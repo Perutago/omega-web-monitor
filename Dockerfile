@@ -1,4 +1,4 @@
-FROM node:18 as build
+FROM node:22 as build
 WORKDIR /app
 COPY . .
 RUN npm install
@@ -6,7 +6,7 @@ RUN npm run build
 RUN npm install --omit=dev
 RUN npm cache clean --force
 
-FROM node:18.15.0-bullseye-slim
+FROM node:22-bookworm-slim
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
