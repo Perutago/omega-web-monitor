@@ -59,7 +59,7 @@ export default class Job implements IJob {
                 } else if (result.error) {
                     sender.send(new Notification('error', this.jobSetting.name, this.jobSetting.url, result.error.message));
                 } else {
-                    sender.send(new Notification('success', this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated', durationString)}\n\n${result.result}`));
+                    sender.send(new Notification('success', this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated', durationString)}\n\n${prevResult.result}\n\n↓\n\n${result.result}`));
                 }
             });
     }

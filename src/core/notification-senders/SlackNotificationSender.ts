@@ -6,7 +6,7 @@ export default class SlackNotificationSender implements INotificationSender {
     constructor(private setting: NotificationSetting) {
     }
 
-    send(notification: Notification) {
+    send(notification: Notification): void {
         fetch(this.setting.webhookUrl, {
             method: 'POST',
             headers: {
