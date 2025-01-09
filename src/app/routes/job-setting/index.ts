@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { validationResult, param, body } from 'express-validator';
 import helmet from 'helmet';
 
-import { allJobSettingTypes } from '../../../core/Types';
+import { allJobSettingTypes, JobSettingType } from '../../../core/Types';
 import Service from '../../services/JobSettingService';
 
 const app = express();
@@ -64,10 +64,10 @@ const validator = {
             .notEmpty()
             .isBoolean(),
         body('xpath')
-            .if(body('type').equals('element-text'))
+            .if(body('type').equals(JobSettingType.XPATH))
             .notEmpty(),
         body('regex')
-            .if(body('type').equals('regex'))
+            .if(body('type').equals(JobSettingType.REGEX))
             .notEmpty(),
         handleError,
     ],
@@ -110,7 +110,7 @@ const validator = {
             .notEmpty()
             .isBoolean(),
         body('xpath')
-            .if(body('type').equals('element-text'))
+            .if(body('type').equals(JobSettingType.XPATH))
             .notEmpty(),
         body('regex')
             .if(body('type').equals('regex'))

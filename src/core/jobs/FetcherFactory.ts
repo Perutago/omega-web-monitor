@@ -1,15 +1,15 @@
-import ElementTextFetcher from './ElementTextFetcher';
+import XpathFetcher from './XpathFetcher';
 import IFetcher from './IFetcher';
 import RegexFetcher from './RegexFetcher';
-import ElementTextComparerSetting from '../entities/ElementTextComparerSetting';
+import XpathJobSetting from '../entities/XpathJobSetting';
 import JobSetting from '../entities/JobSetting';
-import RegexComparerSetting from '../entities/RegexComparerSetting';
+import RegexJobSetting from '../entities/RegexJobSetting';
 
 export default class FetcherFactory {
     static get(jobSetting: JobSetting): IFetcher {
-        if (jobSetting instanceof ElementTextComparerSetting) {
-            return new ElementTextFetcher(jobSetting);
-        } else if (jobSetting instanceof RegexComparerSetting) {
+        if (jobSetting instanceof XpathJobSetting) {
+            return new XpathFetcher(jobSetting);
+        } else if (jobSetting instanceof RegexJobSetting) {
             return new RegexFetcher(jobSetting);
         } else {
             throw new Error(i18n.__('Error.InvalidJobSetting'));

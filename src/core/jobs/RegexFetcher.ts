@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import IFetcher from './IFetcher';
-import JobSetting from '../entities/RegexComparerSetting';
+import JobSetting from '../entities/RegexJobSetting';
 
 export default class RegexFetcher implements IFetcher {
     constructor(private setting: JobSetting) {

@@ -2,9 +2,9 @@ import axios from 'axios';
 import libxmljs from 'libxmljs';
 
 import IFetcher from './IFetcher';
-import JobSetting from '../entities/ElementTextComparerSetting';
+import JobSetting from '../entities/XpathJobSetting';
 
-export default class ElementTextFetcher implements IFetcher {
+export default class XpathFetcher implements IFetcher {
     constructor(private setting: JobSetting) {
     }
 

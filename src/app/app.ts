@@ -13,6 +13,7 @@ import notificationSetting from './routes/notification-setting/index';
 import JobFactory from '../core/jobs/JobFactory';
 import JobSettingRepository from '../core/repositories/JsonJobSettingRepository';
 import NotificationSettingRepository from '../core/repositories/JsonNotificationSettingRepository';
+import { ResultType } from '../core/Types';
 
 const app = express();
 app.use(helmet());
@@ -71,5 +72,5 @@ function clientErrorHandler(err: Error, req: Request, res: Response, next: NextF
 
 function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
     res.status(500);
-    res.render('error', { error: err });
+    res.render(ResultType.ERROR, { error: err });
 }

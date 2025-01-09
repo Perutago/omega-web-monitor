@@ -16,7 +16,7 @@ export default class Job implements IJob {
     constructor(private jobResultRepository: IJobResultRepository<JobResult>, private notificationSettings: NotificationSetting[], private jobSetting: JobSetting) {
     }
 
-    async run() {
+    async run(): Promise<void> {
         try {
             const prevResult = await this.jobResultRepository.read(this.jobSetting.id);
             if (prevResult !== undefined && new Date() < DateUtil.add(prevResult.createdAt, this.jobSetting.duration)) {
@@ -34,12 +34,12 @@ export default class Job implements IJob {
             this.notificationSettings
                 .map(setting => NotificationSenderFactory.get(setting))
                 .forEach(sender => {
-                    sender.send(new Notification('error', this.jobSetting.name, this.jobSetting.url, error instanceof Error ? error.message : i18n.__('Error.Unknown')));
+                    sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, error instanceof Error ? error.message : i18n.__('Error.Unknown')));
                 });
         }
     }
 
-    private createJobResult(resultText: string) {
+    private createJobResult(resultText: string): JobResult {
         const now = new Date();
         const uuid = crypto.randomUUID();
         try {
@@ -49,17 +49,17 @@ export default class Job implements IJob {
         }
     }
 
-    private sendNotification(prevResult: JobResult | undefined, result: JobResult) {
+    private sendNotification(prevResult: JobResult | undefined, result: JobResult): void {
         const durationString = DateUtil.formatDuration(this.jobSetting.duration);
         this.notificationSettings
             .map(setting => NotificationSenderFactory.get(setting))
             .forEach(sender => {
                 if (prevResult === undefined) {
-                    sender.send(new Notification('info', this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted', durationString)));
+                    sender.send(Notification.info(this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted', durationString)));
                 } else if (result.error) {
-                    sender.send(new Notification('error', this.jobSetting.name, this.jobSetting.url, result.error.message));
+                    sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, result.error.message));
                 } else {
-                    sender.send(new Notification('success', this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated', durationString)}\n\n${prevResult.result}\n\n↓\n\n${result.result}`));
+                    sender.send(Notification.success(this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated', durationString)}\n\n${prevResult.result}\n↓\n${result.result}`));
                 }
             });
     }

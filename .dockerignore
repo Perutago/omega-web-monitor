@@ -1,4 +1,8 @@
+.devcontainer
+.eslintrc.json
 .git
-node_modules
-README.md
 .gitignore
+.vscode
+node_modules
+nodemon.json
+README*.md

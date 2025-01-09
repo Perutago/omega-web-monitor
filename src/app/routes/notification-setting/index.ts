@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import helmet from 'helmet';
 
-import { allNotificationSettingTypes } from '../../../core/Types';
+import { allNotificationSettingTypes, NotificationSettingType } from '../../../core/Types';
 import Service from '../../services/NotificationSettingService';
 
 const app = express();
@@ -21,7 +21,7 @@ function handleError(req: Request, res: Response, next: NextFunction) {
     next();
 }
 
-const notificationSettingTypes = allNotificationSettingTypes.filter(settingType => settingType !== 'standard-output');
+const notificationSettingTypes = allNotificationSettingTypes.filter(settingType => settingType !== NotificationSettingType.STANDARD_OUTPUT);
 
 const validator = {
     get: [
@@ -38,7 +38,7 @@ const validator = {
             .notEmpty()
             .isIn(notificationSettingTypes),
         body('webhookUrl')
-            .if(body('type').equals('slack'))
+            .if(body('type').equals(NotificationSettingType.SLACK))
             .notEmpty()
             .isURL(),
         handleError,
@@ -54,7 +54,7 @@ const validator = {
             .notEmpty()
             .isIn(notificationSettingTypes),
         body('webhookUrl')
-            .if(body('type').equals('slack'))
+            .if(body('type').equals(NotificationSettingType.SLACK))
             .notEmpty()
             .isURL(),
         handleError,
