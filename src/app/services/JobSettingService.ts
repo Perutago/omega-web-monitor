@@ -2,7 +2,7 @@ import Service from './Service';
 import Repository from '../../core/repositories/JsonJobSettingRepository';
 
 export default class JobSettingService extends Service {
-    repository = new Repository();
+    private repository = new Repository();
 
     async list() {
         try {

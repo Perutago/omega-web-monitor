@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import fsSync from 'fs';
 import fs from 'fs/promises';
 
@@ -5,22 +6,17 @@ import i18n from 'i18n';
 
 import IJobSettingRepository from './IJobSettingRepository';
 import JobSetting from '../entities/JobSetting';
-import JobSettingFactory from '../entities/JobSettingFactory';
 
 export default class JsonJobSettingRepository implements IJobSettingRepository {
     static settingFileName = 'JobSetting.json';
 
-    get settingFilePath() {
+    static get settingFilePath() {
         return `./settings/${JsonJobSettingRepository.settingFileName}`;
     }
 
     async readAll(): Promise<JobSetting[]> {
-        if (fsSync.existsSync(this.settingFilePath)) {
-            const settings: JobSetting[] = [];
-            const jsonSettings = JSON.parse(await fs.readFile(this.settingFilePath, 'utf8'));
-            for (let i = 0; i < jsonSettings.length; i++) {
-                settings.push(JobSettingFactory.fromJson(jsonSettings[i]));
-            }
+        if (fsSync.existsSync(JsonJobSettingRepository.settingFilePath)) {
+            const settings = JSON.parse(await fs.readFile(JsonJobSettingRepository.settingFilePath, 'utf8'));
             return settings;
         } else {
             throw new Error(i18n.__('Error.FileNotFound', JsonJobSettingRepository.settingFileName));
@@ -34,15 +30,19 @@ export default class JsonJobSettingRepository implements IJobSettingRepository {
 
     async create(entity: JobSetting): Promise<void> {
         const settings = await this.readAll();
-        settings.push(entity);
+        settings.push(Object.assign(entity, { id: crypto.randomUUID() }));
         await this.writeFile(settings);
     }
 
     async update(entity: JobSetting): Promise<void> {
         let settings = await this.readAll();
-        settings = settings.filter(setting => setting.id !== entity.id);
-        settings.push(entity);
-        await this.writeFile(settings);
+        if (settings.some(setting => setting.id === entity.id)) {
+            settings = settings.filter(setting => setting.id !== entity.id);
+            settings.push(entity);
+            await this.writeFile(settings);
+        } else {
+            throw new Error(i18n.__('Error.NotExisted', `id: ${entity.id}`));
+        }
     }
 
     async delete(id: string): Promise<void> {
@@ -52,6 +52,6 @@ export default class JsonJobSettingRepository implements IJobSettingRepository {
 
     private async writeFile(settings: JobSetting[]): Promise<void> {
         const json = JSON.stringify(settings);
-        await fs.writeFile(this.settingFilePath, json);
+        await fs.writeFile(JsonJobSettingRepository.settingFilePath, json);
     }
 }

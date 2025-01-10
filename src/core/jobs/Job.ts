@@ -10,7 +10,6 @@ import NotificationSetting from '../entities/NotificationSetting';
 import Notification from '../notification-senders/Notification';
 import NotificationSenderFactory from '../notification-senders/NotificationSenderFactory';
 import IJobResultRepository from '../repositories/IJobResultRepository';
-import DateUtil from '../utils/DateUtil';
 
 export default class Job implements IJob {
     constructor(private jobResultRepository: IJobResultRepository<JobResult>, private notificationSettings: NotificationSetting[], private jobSetting: JobSetting) {
@@ -19,9 +18,6 @@ export default class Job implements IJob {
     async run(): Promise<void> {
         try {
             const prevResult = await this.jobResultRepository.read(this.jobSetting.id);
-            if (prevResult !== undefined && new Date() < DateUtil.add(prevResult.createdAt, this.jobSetting.duration)) {
-                return;
-            }
             const resultText = await FetcherFactory.get(this.jobSetting).fetch();
             if (prevResult !== undefined && prevResult.result === resultText) {
                 this.jobResultRepository.create(JobResult.getUnupdatedInstance(this.jobSetting.id, resultText));
@@ -50,16 +46,15 @@ export default class Job implements IJob {
     }
 
     private sendNotification(prevResult: JobResult | undefined, result: JobResult): void {
-        const durationString = DateUtil.formatDuration(this.jobSetting.duration);
         this.notificationSettings
             .map(setting => NotificationSenderFactory.get(setting))
             .forEach(sender => {
                 if (prevResult === undefined) {
-                    sender.send(Notification.info(this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted', durationString)));
+                    sender.send(Notification.info(this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted')));
                 } else if (result.error) {
                     sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, result.error.message));
                 } else {
-                    sender.send(Notification.success(this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated', durationString)}\n\n${prevResult.result}\n↓\n${result.result}`));
+                    sender.send(Notification.success(this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated')}\n\n${prevResult.result}\n↓\n${result.result}`));
                 }
             });
     }

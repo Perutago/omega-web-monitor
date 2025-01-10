@@ -35,28 +35,9 @@ const validator = {
         body('type')
             .notEmpty()
             .isIn(allJobSettingTypes),
-        body('duration.months')
-            .if(body('duration.months').notEmpty())
-            .isInt({ min: 0, max: 60 }),
-        body('duration.weeks')
-            .if(body('duration.weeks').notEmpty())
-            .isInt({ min: 0, max: 4 }),
-        body('duration.days')
-            .if(body('duration.days').notEmpty())
-            .isInt({ min: 0, max: 7 }),
-        body('duration.hours')
-            .if(body('duration.hours').notEmpty())
-            .isInt({ min: 0, max: 24 }),
-        body('duration.minutes')
-            .if(body('duration.minutes').notEmpty())
-            .isInt({ min: 0, max: 60 }),
-        body('duration')
-            .custom((_value, { req }) => {
-                if (!req.body.duration || ((req.body.duration.months ?? 0) + (req.body.duration.weeks ?? 0) + (req.body.duration.days ?? 0) + (req.body.duration.hours ?? 0) + (req.body.duration.minutes ?? 0) <= 0)) {
-                    throw new Error(i18n.__('Error.Required', 'duration'));
-                }
-                return true;
-            }),
+        body('cronTime')
+            .if(body('cronTime').notEmpty())
+            .isString(),
         body('url')
             .notEmpty()
             .isURL(),
@@ -81,28 +62,9 @@ const validator = {
         body('type')
             .notEmpty()
             .isIn(allJobSettingTypes),
-        body('duration.months')
-            .if(body('duration.months').notEmpty())
-            .isInt({ min: 0, max: 60 }),
-        body('duration.weeks')
-            .if(body('duration.weeks').notEmpty())
-            .isInt({ min: 0, max: 4 }),
-        body('duration.days')
-            .if(body('duration.days').notEmpty())
-            .isInt({ min: 0, max: 7 }),
-        body('duration.hours')
-            .if(body('duration.hours').notEmpty())
-            .isInt({ min: 0, max: 24 }),
-        body('duration.minutes')
-            .if(body('duration.minutes').notEmpty())
-            .isInt({ min: 0, max: 60 }),
-        body('duration')
-            .custom((_value, { req }) => {
-                if (!req.body.duration || ((req.body.duration.months ?? 0) + (req.body.duration.weeks ?? 0) + (req.body.duration.days ?? 0) + (req.body.duration.hours ?? 0) + (req.body.duration.minutes ?? 0) <= 0)) {
-                    throw new Error(i18n.__('Error.Required', 'duration'));
-                }
-                return true;
-            }),
+        body('cronTime')
+            .if(body('cronTime').notEmpty())
+            .isString(),
         body('url')
             .notEmpty()
             .isURL(),

@@ -11,13 +11,13 @@ import StandardOutputNotificationSetting from '../entities/StandardOutputNotific
 export default class JsonNotificationSettingRepository implements INotificationSettingRepository {
     static settingFileName = 'NotificationSetting.json';
 
-    get settingFilePath() {
+    static get settingFilePath() {
         return `./settings/${JsonNotificationSettingRepository.settingFileName}`;
     }
 
     async readAll(): Promise<NotificationSetting[]> {
-        if (fsSync.existsSync(this.settingFilePath)) {
-            const settings = JSON.parse(await fs.readFile(this.settingFilePath, 'utf8'));
+        if (fsSync.existsSync(JsonNotificationSettingRepository.settingFilePath)) {
+            const settings = JSON.parse(await fs.readFile(JsonNotificationSettingRepository.settingFilePath, 'utf8'));
             settings.push(new StandardOutputNotificationSetting());
             return settings;
         } else {
@@ -54,6 +54,6 @@ export default class JsonNotificationSettingRepository implements INotificationS
 
     private async writeFile(settings: NotificationSetting[]) {
         const json = JSON.stringify(settings);
-        await fs.writeFile(this.settingFilePath, json);
+        await fs.writeFile(JsonNotificationSettingRepository.settingFilePath, json);
     }
 }

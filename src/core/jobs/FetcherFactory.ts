@@ -1,3 +1,5 @@
+import i18n from 'i18n';
+
 import XpathFetcher from './XpathFetcher';
 import IFetcher from './IFetcher';
 import RegexFetcher from './RegexFetcher';

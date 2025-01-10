@@ -4,8 +4,10 @@ import JobSettingRepository from '../../core/repositories/JsonJobSettingReposito
 import NotificationSettingRepository from '../../core/repositories/JsonNotificationSettingRepository';
 
 export default class JobService extends Service {
-    jobSettingRepository = new JobSettingRepository();
-    notificationSettingRepository = new NotificationSettingRepository();
+    private jobSettingRepository = new JobSettingRepository();
+
+    private notificationSettingRepository = new NotificationSettingRepository();
+
     async run(id: string) {
         try {
             const jobSetting = await this.jobSettingRepository.read(id);

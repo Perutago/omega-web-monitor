@@ -5,15 +5,15 @@ import express, { NextFunction, Request, Response } from 'express';
 import listEndpoints from 'express-list-endpoints';
 import helmet from 'helmet';
 import i18n from 'i18n';
-import cron from 'node-cron';
+import { CronJob } from 'cron';
 
 import job from './routes/job/index';
 import jobSetting from './routes/job-setting/index';
 import notificationSetting from './routes/notification-setting/index';
 import JobFactory from '../core/jobs/JobFactory';
-import JobSettingRepository from '../core/repositories/JsonJobSettingRepository';
 import NotificationSettingRepository from '../core/repositories/JsonNotificationSettingRepository';
 import { ResultType } from '../core/Types';
+import JobSettingWatcher from './JobSettingWatcher';
 
 const app = express();
 app.use(helmet());
@@ -41,28 +41,20 @@ i18n.configure({
     updateFiles: false,
 });
 i18n.setLocale(config.get('locale'));
-cron.schedule(config.get('schedule'), () => {
-    doSchedule();
-});
 
-async function doSchedule() {
+const watcher = new JobSettingWatcher(async jobSetting => {
     const notificationSettingRepository = new NotificationSettingRepository();
     const notificationSettings = await notificationSettingRepository.readAll();
-    const jobSettingRepository = new JobSettingRepository();
-    const jobSettings = await jobSettingRepository.readAll();
-    jobSettings.forEach(jobSetting => {
-        const job = JobFactory.get(notificationSettings, jobSetting);
-        job.run();
-    });
-    return Promise.resolve();
-}
+    JobFactory.get(notificationSettings, jobSetting).run();
+});
+watcher.loadJobSetting();
 
-function logErrors(err: Error, req: Request, res: Response, next: NextFunction) {
+function logErrors(err: Error, req: Request, res: Response, next: NextFunction): void {
     console.error(err.stack);
     next(err);
 }
 
-function clientErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+function clientErrorHandler(err: Error, req: Request, res: Response, next: NextFunction): void {
     if (req.xhr) {
         res.status(500).send({ error: 'Something failed!' });
     } else {
@@ -70,7 +62,7 @@ function clientErrorHandler(err: Error, req: Request, res: Response, next: NextF
     }
 }
 
-function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
+function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
     res.status(500);
     res.render(ResultType.ERROR, { error: err });
 }
