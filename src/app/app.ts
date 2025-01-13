@@ -8,6 +8,7 @@ import i18n from 'i18n';
 import { CronJob } from 'cron';
 
 import job from './routes/job/index';
+import jobResult from './routes/job-result/index';
 import jobSetting from './routes/job-setting/index';
 import notificationSetting from './routes/notification-setting/index';
 import JobFactory from '../core/jobs/JobFactory';
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const rootUrl = '/omega-web-monitor/api/v1/';
 app.use(`${rootUrl}job`, job);
+app.use(`${rootUrl}job-result`, jobResult);
 app.use(`${rootUrl}job-setting`, jobSetting);
 app.use(`${rootUrl}notification-setting`, notificationSetting);
 app.use(logErrors);

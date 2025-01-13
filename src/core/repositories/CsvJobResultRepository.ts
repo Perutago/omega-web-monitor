@@ -1,26 +1,25 @@
-import fs from 'fs';
-
+import fsSync from 'fs';
+import fs from 'fs/promises';
 import * as csv from 'csv';
 
 import IJobResultRepository from './IJobResultRepository';
-import Result from '../entities/JobResult';
 import JobResult from '../entities/JobResult';
 import DateUtil from '../utils/DateUtil';
 
 export default class CsvJobResultRepository implements IJobResultRepository<JobResult> {
     async read(jobId: string): Promise<JobResult | undefined> {
-        const processFile = async () => {
-            const records = [];
-            const filePath = `./results/JobResult_${jobId}.csv`;
-            if (fs.existsSync(filePath)) {
-                for await (const record of fs.createReadStream(filePath).pipe(csv.parse())) {
-                    records.push(Result.fromArray(record));
-                }
+        return this.readFile(`./results/JobResult_${jobId}.csv`);
+    }
+
+    async readAll(): Promise<JobResult[]> {
+        const records: JobResult[] = [];
+        for (const fileName of await fs.readdir('./results')) {
+            const jobResult = await this.readFile(`./results/${fileName}`);
+            if (jobResult) {
+                records.push(jobResult);
             }
-            return records;
-        };
-        const results = await processFile();
-        return results.length === 0 ? undefined : results.pop();
+        }
+        return records;
     }
 
     create(entity: JobResult): void {
@@ -34,6 +33,20 @@ export default class CsvJobResultRepository implements IJobResultRepository<JobR
         };
         csv
             .stringify([entity], options)
-            .pipe(fs.createWriteStream(`./results/JobResult_${entity.jobId}.csv`, { encoding: 'utf-8', flags: 'a' }));
+            .pipe(fsSync.createWriteStream(`./results/JobResult_${entity.jobId}.csv`, { encoding: 'utf-8', flags: 'a' }));
+    }
+
+    private async readFile(filePath: string): Promise<JobResult | undefined> {
+        const processFile = async () => {
+            const records: JobResult[] = [];
+            if (fsSync.existsSync(filePath)) {
+                for await (const record of fsSync.createReadStream(filePath).pipe(csv.parse())) {
+                    records.push(JobResult.fromArray(record));
+                }
+            }
+            return records;
+        };
+        const results = await processFile();
+        return results.length === 0 ? undefined : results.pop();
     }
 }
