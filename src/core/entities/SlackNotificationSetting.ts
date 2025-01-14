@@ -1,8 +1,8 @@
-import { NotificationSettingType } from '../Types';
-import NotificationSetting from './NotificationSetting';
+import INotificationSetting, { NotificationSettingId, NotificationSettingType } from './INotificationSetting';
 
-export default class SlackNotificationSetting extends NotificationSetting {
-    constructor(public id: string, public name: string, public webhookUrl: string) {
-        super(id, name, NotificationSettingType.SLACK);
+export default class SlackNotificationSetting implements INotificationSetting {
+    public readonly type = NotificationSettingType.SLACK;
+
+    constructor(public id: NotificationSettingId, public name: string, public webhookUrl: string) {
     }
 }

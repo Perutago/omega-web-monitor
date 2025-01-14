@@ -3,13 +3,14 @@ import { CronJob } from 'cron';
 import fsSync from 'fs';
 
 import JobSettingRepository from '../core/repositories/JsonJobSettingRepository';
-import JobSetting from '../core/entities/JobSetting';
+import IJobSetting from '../core/entities/IJobSetting';
 import JsonJobSettingRepository from '../core/repositories/JsonJobSettingRepository';
+import JobSetting from '../core/entities/IJobSetting';
 
 export default class JobSettingWatcher {
     private cronJobs: CronJob[] = [];
 
-    constructor(public callback: (jobSetting: JobSetting) => Promise<void>) {
+    constructor(public callback: (jobSetting: IJobSetting) => Promise<void>) {
         fsSync.watchFile(JsonJobSettingRepository.settingFilePath, async () => {
             this.unloadJobSetting();
             await this.loadJobSetting();
@@ -18,8 +19,8 @@ export default class JobSettingWatcher {
 
     async loadJobSetting(): Promise<void> {
         const jobSettingRepository = new JobSettingRepository();
-        const jobSettings = await jobSettingRepository.readAll();
-        this.cronJobs.push(...jobSettings.map(jobSetting => this.createCronJob(jobSetting)));
+        const jobSettings = await jobSettingRepository.readAllAsync();
+        this.cronJobs.push(...jobSettings.filter(jobSetting => jobSetting.cronTime && jobSetting.enabled).map(jobSetting => this.createCronJob(jobSetting)));
     }
 
     private unloadJobSetting(): void {

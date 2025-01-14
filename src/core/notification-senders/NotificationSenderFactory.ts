@@ -1,12 +1,12 @@
-import SlackNotificationSender from './SlackNotificationSender';
-import StandardOutputNotificationSender from './StandardOutputNotificationSender';
-import NotificationSetting from '../entities/NotificationSetting';
+import NotificationSetting, { NotificationSettingType } from '../entities/INotificationSetting';
 import SlackNotificationSetting from '../entities/SlackNotificationSetting';
 import StandardOutputNotificationSetting from '../entities/StandardOutputNotificationSetting';
-import { NotificationSettingType } from '../Types';
+import INotificationSender from './INotificationSender';
+import SlackNotificationSender from './SlackNotificationSender';
+import StandardOutputNotificationSender from './StandardOutputNotificationSender';
 
 export default class NotificationSenderFactory {
-    static get(setting: NotificationSetting) {
+    static get(setting: NotificationSetting): INotificationSender {
         if (setting.type === NotificationSettingType.SLACK) {
             return new SlackNotificationSender(setting as SlackNotificationSetting);
         } else if (setting.type === NotificationSettingType.STANDARD_OUTPUT) {

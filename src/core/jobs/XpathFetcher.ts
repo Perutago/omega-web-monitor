@@ -1,9 +1,9 @@
 import axios from 'axios';
-import libxmljs from 'libxmljs';
 import i18n from 'i18n';
+import libxmljs from 'libxmljs';
 
-import IFetcher from './IFetcher';
 import JobSetting from '../entities/XpathJobSetting';
+import IFetcher from './IFetcher';
 
 export default class XpathFetcher implements IFetcher {
     constructor(private setting: JobSetting) {

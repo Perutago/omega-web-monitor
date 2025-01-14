@@ -3,8 +3,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import { validationResult, param, body } from 'express-validator';
 import helmet from 'helmet';
 
-import { allJobSettingTypes, JobSettingType } from '../../../core/Types';
 import Service from '../../services/JobSettingService';
+import { allJobSettingTypes, JobSettingType } from '../../../core/entities/IJobSetting';
 
 const app = express();
 app.use(helmet());

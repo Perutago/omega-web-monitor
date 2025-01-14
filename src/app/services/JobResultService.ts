@@ -17,7 +17,7 @@ export default class JobResultService extends Service {
     }
 
     async get(id: string) {
-        const jobResult = await this.repository.read(id);
+        const jobResult = await this.repository.readAsync(id);
         return {
             success: true,
             data: jobResult

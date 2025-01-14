@@ -1,13 +1,13 @@
-import NotificationSetting from '../entities/NotificationSetting';
+import NotificationSetting from '../entities/INotificationSetting';
 
 export default interface INotificationSettingRepository {
-    readAll(): Promise<NotificationSetting[]>;
+    readAllAsync(): Promise<NotificationSetting[]>;
 
-    read(id: string): Promise<NotificationSetting | undefined>;
+    readAsync(id: string): Promise<NotificationSetting | undefined>;
 
-    create(entity: NotificationSetting): Promise<void>;
+    createAsync(entity: NotificationSetting): Promise<void>;
 
-    update(entity: NotificationSetting): Promise<void>;
+    updateAsync(entity: NotificationSetting): Promise<void>;
 
-    delete(id: string): Promise<void>;
+    deleteAsync(id: string): Promise<void>;
 }

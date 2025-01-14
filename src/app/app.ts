@@ -46,8 +46,8 @@ i18n.setLocale(config.get('locale'));
 
 const watcher = new JobSettingWatcher(async jobSetting => {
     const notificationSettingRepository = new NotificationSettingRepository();
-    const notificationSettings = await notificationSettingRepository.readAll();
-    JobFactory.get(notificationSettings, jobSetting).run();
+    const notificationSettings = await notificationSettingRepository.readAllAsync();
+    JobFactory.get(notificationSettings, jobSetting).runAsync();
 });
 watcher.loadJobSetting();
 

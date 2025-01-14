@@ -3,8 +3,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import helmet from 'helmet';
 
-import { allNotificationSettingTypes, NotificationSettingType } from '../../../core/Types';
 import Service from '../../services/NotificationSettingService';
+import { allNotificationSettingTypes, NotificationSettingType } from '../../../core/entities/INotificationSetting';
 
 const app = express();
 app.use(helmet());

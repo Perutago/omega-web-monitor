@@ -6,7 +6,7 @@ export default class JobSettingService extends Service {
 
     async list() {
         try {
-            const data = await this.repository.readAll();
+            const data = await this.repository.readAllAsync();
             return {
                 success: true,
                 data
@@ -17,7 +17,7 @@ export default class JobSettingService extends Service {
     }
 
     async get(id: string) {
-        const settings = await this.repository.readAll();
+        const settings = await this.repository.readAllAsync();
         return {
             success: true,
             data: settings.find(setting => setting.id === id) ?? null
@@ -27,7 +27,7 @@ export default class JobSettingService extends Service {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async add(json: any) {
         try {
-            await this.repository.create(JSON.parse(JSON.stringify(json)));
+            await this.repository.createAsync(JSON.parse(JSON.stringify(json)));
             return { success: true };
         } catch (error) {
             return this.handleError(error);
@@ -37,7 +37,7 @@ export default class JobSettingService extends Service {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async update(json: any) {
         try {
-            await this.repository.update(JSON.parse(JSON.stringify(json)));
+            await this.repository.updateAsync(JSON.parse(JSON.stringify(json)));
             return { success: true };
         } catch (error) {
             return this.handleError(error);
@@ -46,7 +46,7 @@ export default class JobSettingService extends Service {
 
     async remove(id: string) {
         try {
-            await this.repository.delete(id);
+            await this.repository.deleteAsync(id);
             return { success: true };
         } catch (error) {
             return this.handleError(error);

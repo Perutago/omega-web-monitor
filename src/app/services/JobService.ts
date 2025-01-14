@@ -12,11 +12,11 @@ export default class JobService extends Service {
 
     async run(id: string) {
         try {
-            const jobSetting = await this.jobSettingRepository.read(id);
+            const jobSetting = await this.jobSettingRepository.readAsync(id);
             if (jobSetting) {
-                const notificationSettings = await this.notificationSettingRepository.readAll();
+                const notificationSettings = await this.notificationSettingRepository.readAllAsync();
                 const job = JobFactory.get(notificationSettings, jobSetting);
-                job.run();
+                await job.runAsync();
                 return {
                     success: true,
                     data: null,

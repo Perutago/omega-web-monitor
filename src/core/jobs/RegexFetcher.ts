@@ -1,8 +1,8 @@
 import axios from 'axios';
 import i18n from 'i18n';
 
-import IFetcher from './IFetcher';
 import JobSetting from '../entities/RegexJobSetting';
+import IFetcher from './IFetcher';
 
 export default class RegexFetcher implements IFetcher {
     constructor(private setting: JobSetting) {

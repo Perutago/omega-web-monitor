@@ -1,10 +1,8 @@
-import JobSetting from './JobSetting';
-import { allJobSettingTypes } from '../Types';
+import IJobSetting, { JobSettingId, JobSettingType } from './IJobSetting';
 
-export default class RegexJobSetting extends JobSetting {
-    static type = allJobSettingTypes[1];
+export default class RegexJobSetting implements IJobSetting {
+    public readonly type = JobSettingType.REGEX;
 
-    constructor(public id: string, public name: string, public cronTime: string, public url: string, public enabled: boolean, public regex: string) {
-        super(id, name, RegexJobSetting.type, cronTime, url, enabled);
+    constructor(public id: JobSettingId, public name: string, public cronTime: string, public url: string, public enabled: boolean, public regex: string) {
     }
 }

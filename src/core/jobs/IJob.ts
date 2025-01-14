@@ -1,3 +1,3 @@
 export default interface IJob {
-    run(): void;
+    runAsync(): void;
 }

@@ -1,12 +1,11 @@
 import crypto from 'crypto';
 import fsSync from 'fs';
 import fs from 'fs/promises';
-
 import i18n from 'i18n';
 
-import INotificationSettingRepository from './INotificationSettingRepository';
-import NotificationSetting from '../entities/NotificationSetting';
+import NotificationSetting from '../entities/INotificationSetting';
 import StandardOutputNotificationSetting from '../entities/StandardOutputNotificationSetting';
+import INotificationSettingRepository from './INotificationSettingRepository';
 
 export default class JsonNotificationSettingRepository implements INotificationSettingRepository {
     static settingFileName = 'NotificationSetting.json';
@@ -15,7 +14,7 @@ export default class JsonNotificationSettingRepository implements INotificationS
         return `./settings/${JsonNotificationSettingRepository.settingFileName}`;
     }
 
-    async readAll(): Promise<NotificationSetting[]> {
+    async readAllAsync(): Promise<NotificationSetting[]> {
         if (fsSync.existsSync(JsonNotificationSettingRepository.settingFilePath)) {
             const settings = JSON.parse(await fs.readFile(JsonNotificationSettingRepository.settingFilePath, 'utf8'));
             settings.push(new StandardOutputNotificationSetting());
@@ -25,19 +24,19 @@ export default class JsonNotificationSettingRepository implements INotificationS
         }
     }
 
-    async read(id: string): Promise<NotificationSetting | undefined> {
-        const settings = await this.readAll();
+    async readAsync(id: string): Promise<NotificationSetting | undefined> {
+        const settings = await this.readAllAsync();
         return settings.find(setting => setting.id === id);
     }
 
-    async create(entity: NotificationSetting): Promise<void> {
-        const settings = await this.readAll();
+    async createAsync(entity: NotificationSetting): Promise<void> {
+        const settings = await this.readAllAsync();
         settings.push(Object.assign(entity, { id: crypto.randomUUID() }));
         await this.writeFile(settings);
     }
 
-    async update(entity: NotificationSetting): Promise<void> {
-        let settings = await this.readAll();
+    async updateAsync(entity: NotificationSetting): Promise<void> {
+        let settings = await this.readAllAsync();
         if (settings.some(setting => setting.id === entity.id)) {
             settings = settings.filter(setting => setting.id !== entity.id);
             settings.push(entity);
@@ -47,8 +46,8 @@ export default class JsonNotificationSettingRepository implements INotificationS
         }
     }
 
-    async delete(id: string): Promise<void> {
-        const settings = await this.readAll();
+    async deleteAsync(id: string): Promise<void> {
+        const settings = await this.readAllAsync();
         await this.writeFile(settings.filter(setting => setting.id !== id));
     }
 

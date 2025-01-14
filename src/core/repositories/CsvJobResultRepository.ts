@@ -1,13 +1,13 @@
+import * as csv from 'csv';
 import fsSync from 'fs';
 import fs from 'fs/promises';
-import * as csv from 'csv';
 
-import IJobResultRepository from './IJobResultRepository';
 import JobResult from '../entities/JobResult';
 import DateUtil from '../utils/DateUtil';
+import IJobResultRepository from './IJobResultRepository';
 
 export default class CsvJobResultRepository implements IJobResultRepository<JobResult> {
-    async read(jobId: string): Promise<JobResult | undefined> {
+    async readAsync(jobId: string): Promise<JobResult | undefined> {
         return this.readFile(`./results/JobResult_${jobId}.csv`);
     }
 

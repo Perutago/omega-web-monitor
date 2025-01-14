@@ -1,10 +1,8 @@
-import JobSetting from './JobSetting';
-import { allJobSettingTypes } from '../Types';
+import IJobSetting, { JobSettingId, JobSettingType } from './IJobSetting';
 
-export default class XpathJobSetting extends JobSetting {
-    static type = allJobSettingTypes[0];
+export default class XpathJobSetting implements IJobSetting {
+    public readonly type = JobSettingType.XPATH;
 
-    constructor(public id: string, public name: string, public cronTime: string, public url: string, public enabled: boolean, public xpath: string) {
-        super(id, name, XpathJobSetting.type, cronTime, url, enabled);
+    constructor(public id: JobSettingId, public name: string, public cronTime: string, public url: string, public enabled: boolean, public xpath: string) {
     }
 }

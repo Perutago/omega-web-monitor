@@ -1,13 +1,13 @@
-import JobSetting from '../entities/JobSetting';
+import IJobSetting from '../entities/IJobSetting';
 
 export default interface IJobSettingRepository {
-    readAll(): Promise<JobSetting[]>;
+    readAllAsync(): Promise<IJobSetting[]>;
 
-    read(id: string): Promise<JobSetting | undefined>;
+    readAsync(id: string): Promise<IJobSetting | undefined>;
 
-    create(entity: JobSetting): Promise<void>;
+    createAsync(entity: IJobSetting): Promise<void>;
 
-    update(entity: JobSetting): Promise<void>;
+    updateAsync(entity: IJobSetting): Promise<void>;
 
-    delete(id: string): Promise<void>;
+    deleteAsync(id: string): Promise<void>;
 }
