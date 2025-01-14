@@ -1,3 +1,5 @@
+import i18n from 'i18n';
+
 import Service from './Service';
 import JobFactory from '../../core/jobs/JobFactory';
 import JobSettingRepository from '../../core/repositories/JsonJobSettingRepository';

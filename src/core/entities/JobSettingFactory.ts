@@ -1,3 +1,5 @@
+import i18n from 'i18n';
+
 import XpathJobSetting from './XpathJobSetting';
 import RegexJobSetting from './RegexJobSetting';
 

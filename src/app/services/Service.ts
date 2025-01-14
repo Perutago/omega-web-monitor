@@ -1,3 +1,5 @@
+import i18n from 'i18n';
+
 export default class Service {
     handleError(error: unknown) {
         if (error instanceof Error) {
