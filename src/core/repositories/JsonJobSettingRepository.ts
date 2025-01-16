@@ -14,7 +14,7 @@ export default class JsonJobSettingRepository implements IJobSettingRepository {
         return `./settings/${JsonJobSettingRepository.settingFileName}`;
     }
 
-    async readAllAsync(): Promise<IJobSetting[]> {
+    async readAll(): Promise<IJobSetting[]> {
         if (fsSync.existsSync(JsonJobSettingRepository.settingFilePath)) {
             const settings = JSON.parse(await fs.readFile(JsonJobSettingRepository.settingFilePath, 'utf8'));
             return settings;
@@ -23,19 +23,19 @@ export default class JsonJobSettingRepository implements IJobSettingRepository {
         }
     }
 
-    async readAsync(id: string): Promise<IJobSetting | undefined> {
-        const settings = await this.readAllAsync();
+    async read(id: string): Promise<IJobSetting | undefined> {
+        const settings = await this.readAll();
         return settings.find(setting => setting.id === id);
     }
 
-    async createAsync(entity: IJobSetting): Promise<void> {
-        const settings = await this.readAllAsync();
+    async create(entity: IJobSetting): Promise<void> {
+        const settings = await this.readAll();
         settings.push(Object.assign(entity, { id: crypto.randomUUID() }));
         await this.writeFile(settings);
     }
 
-    async updateAsync(entity: IJobSetting): Promise<void> {
-        let settings = await this.readAllAsync();
+    async update(entity: IJobSetting): Promise<void> {
+        let settings = await this.readAll();
         if (settings.some(setting => setting.id === entity.id)) {
             settings = settings.filter(setting => setting.id !== entity.id);
             settings.push(entity);
@@ -45,8 +45,8 @@ export default class JsonJobSettingRepository implements IJobSettingRepository {
         }
     }
 
-    async deleteAsync(id: string): Promise<void> {
-        const settings = await this.readAllAsync();
+    async delete(id: string): Promise<void> {
+        const settings = await this.readAll();
         await this.writeFile(settings.filter(setting => setting.id !== id));
     }
 

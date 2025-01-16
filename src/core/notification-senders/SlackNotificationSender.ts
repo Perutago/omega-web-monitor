@@ -1,14 +1,14 @@
-import INotificationSender from './INotificationSender';
-import Notification from './Notification';
 import NotificationSetting from '../entities/SlackNotificationSetting';
 import { ResultType } from '../Types';
+import INotificationSender from './INotificationSender';
+import Notification from './Notification';
 
 export default class SlackNotificationSender implements INotificationSender {
     constructor(private setting: NotificationSetting) {
     }
 
-    send(notification: Notification): void {
-        fetch(this.setting.webhookUrl, {
+    async send(notification: Notification): Promise<void> {
+        await fetch(this.setting.webhookUrl, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'

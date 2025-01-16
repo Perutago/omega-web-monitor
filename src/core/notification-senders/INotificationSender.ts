@@ -1,5 +1,5 @@
 import Notification from './Notification';
 
 export default interface INotificationSender {
-    send(notification: Notification): void;
+    send(notification: Notification): Promise<void>;
 }

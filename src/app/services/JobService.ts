@@ -1,31 +1,32 @@
 import i18n from 'i18n';
 
-import Service from './Service';
-import JobFactory from '../../core/jobs/JobFactory';
-import JobSettingRepository from '../../core/repositories/JsonJobSettingRepository';
-import NotificationSettingRepository from '../../core/repositories/JsonNotificationSettingRepository';
+import Job from '../../core/jobs/Job';
+import IJobResultRepository from '../../core/repositories/IJobResultRepository';
+import IJobSettingRepository from '../../core/repositories/IJobSettingRepository';
+import INotificationSettingRepository from '../../core/repositories/INotificationSettingRepository';
 
-export default class JobService extends Service {
-    private jobSettingRepository = new JobSettingRepository();
+export default class JobService<T extends IJobResultRepository, U extends IJobSettingRepository, V extends INotificationSettingRepository> {
+    private jobResultRepository: T;
 
-    private notificationSettingRepository = new NotificationSettingRepository();
+    private jobSettingRepository: U;
 
-    async run(id: string) {
-        try {
-            const jobSetting = await this.jobSettingRepository.readAsync(id);
-            if (jobSetting) {
-                const notificationSettings = await this.notificationSettingRepository.readAllAsync();
-                const job = JobFactory.get(notificationSettings, jobSetting);
-                await job.runAsync();
-                return {
-                    success: true,
-                    data: null,
-                };
-            } else {
-                throw new Error(i18n.__('Error.NotExisted', id));
-            }
-        } catch (error) {
-            return this.handleError(error);
+    private notificationSettingRepository: V;
+
+    constructor(jobResultRepository: new () => T, jobSettingRepository: new () => U, notificationSettingRepository: new () => V) {
+        this.jobResultRepository = new jobResultRepository();
+        this.jobSettingRepository = new jobSettingRepository();
+        this.notificationSettingRepository = new notificationSettingRepository();
+    }
+
+    async run(id: string): ResultType<void> {
+        const jobSetting = await this.jobSettingRepository.read(id);
+        if (jobSetting) {
+            const notificationSettings = await this.notificationSettingRepository.readAll();
+            const job = new Job(this.jobResultRepository, notificationSettings, jobSetting);
+            await job.run();
+            return { success: true };
+        } else {
+            throw new Error(i18n.__('Error.NotExisted', id));
         }
     }
 }

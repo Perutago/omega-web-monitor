@@ -1,55 +1,40 @@
-import Repository from '../../core/repositories/JsonNotificationSettingRepository';
-import Service from './Service';
+import INotificationSetting from '../../core/entities/INotificationSetting';
+import IRepository from '../../core/repositories/INotificationSettingRepository';
 
-export default class NotificationSettingService extends Service {
-    private repository = new Repository();
+export default class NotificationSettingService<T extends IRepository> {
+    private repository: T;
 
-    async list() {
-        try {
-            const data = await this.repository.readAllAsync();
-            return {
-                success: true,
-                data
-            };
-        } catch (error) {
-            return this.handleError(error);
-        }
+    constructor(repository: new () => T) {
+        this.repository = new repository();
     }
 
-    async get(id: string) {
-        const settings = await this.repository.readAllAsync();
+    async list(): ResultType<INotificationSetting[]> {
+        return {
+            success: true,
+            data: await this.repository.readAll(),
+        };
+    }
+
+    async get(id: string): ResultType<INotificationSetting> {
+        const settings = await this.repository.readAll();
         return {
             success: true,
             data: settings.find(setting => setting.id === id) ?? null
         };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async add(json: any) {
-        try {
-            await this.repository.createAsync(JSON.parse(JSON.stringify(json)));
-            return { success: true };
-        } catch (error) {
-            return this.handleError(error);
-        }
+    async add(json: unknown): ResultType<void> {
+        await this.repository.create(JSON.parse(JSON.stringify(json)));
+        return { success: true };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async update(json: any) {
-        try {
-            await this.repository.updateAsync(JSON.parse(JSON.stringify(json)));
-            return { success: true };
-        } catch (error) {
-            return this.handleError(error);
-        }
+    async update(json: unknown): ResultType<void> {
+        await this.repository.update(JSON.parse(JSON.stringify(json)));
+        return { success: true };
     }
 
-    async remove(id: string) {
-        try {
-            await this.repository.deleteAsync(id);
-            return { success: true };
-        } catch (error) {
-            return this.handleError(error);
-        }
+    async remove(id: string): ResultType<void> {
+        await this.repository.delete(id);
+        return { success: true };
     }
 }

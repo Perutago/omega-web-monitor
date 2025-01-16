@@ -1,26 +1,25 @@
-import Service from './Service';
-import Repository from '../../core/repositories/CsvJobResultRepository';
+import JobResult from '../../core/entities/JobResult';
+import IRepository from '../../core/repositories/IJobResultRepository';
 
-export default class JobResultService extends Service {
-    private repository = new Repository();
+export default class JobResultService<T extends IRepository> {
+    private repository: T;
 
-    async list() {
-        try {
-            const data = await this.repository.readAll();
-            return {
-                success: true,
-                data
-            };
-        } catch (error) {
-            return this.handleError(error);
-        }
+    constructor(repository: new () => T) {
+        this.repository = new repository();
     }
 
-    async get(id: string) {
-        const jobResult = await this.repository.readAsync(id);
+    async list(): ResultType<JobResult[]> {
         return {
             success: true,
-            data: jobResult
+            data: await this.repository.readAll(),
+        };
+    }
+
+    async get(id: string): ResultType<JobResult> {
+        const jobResult = await this.repository.read(id);
+        return {
+            success: true,
+            data: await this.repository.read(id),
         };
     }
 }

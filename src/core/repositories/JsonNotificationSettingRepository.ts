@@ -14,7 +14,7 @@ export default class JsonNotificationSettingRepository implements INotificationS
         return `./settings/${JsonNotificationSettingRepository.settingFileName}`;
     }
 
-    async readAllAsync(): Promise<NotificationSetting[]> {
+    async readAll(): Promise<NotificationSetting[]> {
         if (fsSync.existsSync(JsonNotificationSettingRepository.settingFilePath)) {
             const settings = JSON.parse(await fs.readFile(JsonNotificationSettingRepository.settingFilePath, 'utf8'));
             settings.push(new StandardOutputNotificationSetting());
@@ -24,19 +24,19 @@ export default class JsonNotificationSettingRepository implements INotificationS
         }
     }
 
-    async readAsync(id: string): Promise<NotificationSetting | undefined> {
-        const settings = await this.readAllAsync();
+    async read(id: string): Promise<NotificationSetting | undefined> {
+        const settings = await this.readAll();
         return settings.find(setting => setting.id === id);
     }
 
-    async createAsync(entity: NotificationSetting): Promise<void> {
-        const settings = await this.readAllAsync();
+    async create(entity: NotificationSetting): Promise<void> {
+        const settings = await this.readAll();
         settings.push(Object.assign(entity, { id: crypto.randomUUID() }));
         await this.writeFile(settings);
     }
 
-    async updateAsync(entity: NotificationSetting): Promise<void> {
-        let settings = await this.readAllAsync();
+    async update(entity: NotificationSetting): Promise<void> {
+        let settings = await this.readAll();
         if (settings.some(setting => setting.id === entity.id)) {
             settings = settings.filter(setting => setting.id !== entity.id);
             settings.push(entity);
@@ -46,8 +46,8 @@ export default class JsonNotificationSettingRepository implements INotificationS
         }
     }
 
-    async deleteAsync(id: string): Promise<void> {
-        const settings = await this.readAllAsync();
+    async delete(id: string): Promise<void> {
+        const settings = await this.readAll();
         await this.writeFile(settings.filter(setting => setting.id !== id));
     }
 

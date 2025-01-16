@@ -1,7 +1,9 @@
 import JobResult from '../entities/JobResult';
 
-export default interface IJobResultRepository<T extends JobResult> {
-    readAsync(jobId: string): Promise<T | undefined>;
+export default interface IJobResultRepository {
+    readAll(): Promise<JobResult[]>;
 
-    create(entity: T): void;
+    read(jobId: string): Promise<JobResult | undefined>;
+
+    create(entity: JobResult): void;
 }

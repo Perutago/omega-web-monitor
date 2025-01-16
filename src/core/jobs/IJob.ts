@@ -1,3 +1,3 @@
 export default interface IJob {
-    runAsync(): void;
+    run(): Promise<void>;
 }

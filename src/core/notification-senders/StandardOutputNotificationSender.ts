@@ -6,7 +6,8 @@ export default class StandardOutputNotificationSender implements INotificationSe
     constructor(private setting: NotificationSetting) {
     }
 
-    send(notification: Notification): void {
+    async send(notification: Notification): Promise<void> {
         console.log(`${notification.title}\n${notification.message}`);
+        return Promise.resolve();
     }
 }

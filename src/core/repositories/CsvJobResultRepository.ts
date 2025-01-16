@@ -6,8 +6,8 @@ import JobResult from '../entities/JobResult';
 import DateUtil from '../utils/DateUtil';
 import IJobResultRepository from './IJobResultRepository';
 
-export default class CsvJobResultRepository implements IJobResultRepository<JobResult> {
-    async readAsync(jobId: string): Promise<JobResult | undefined> {
+export default class CsvJobResultRepository implements IJobResultRepository {
+    async read(jobId: string): Promise<JobResult | undefined> {
         return this.readFile(`./results/JobResult_${jobId}.csv`);
     }
 

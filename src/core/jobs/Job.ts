@@ -1,23 +1,21 @@
 import crypto from 'crypto';
-
 import i18n from 'i18n';
-
-import FetcherFactory from './FetcherFactory';
-import IJob from './IJob';
-import JobResult, { JobResultId } from '../entities/JobResult';
 import IJobSetting from '../entities/IJobSetting';
 import NotificationSetting from '../entities/INotificationSetting';
+import JobResult, { JobResultId } from '../entities/JobResult';
 import Notification from '../notification-senders/Notification';
 import NotificationSenderFactory from '../notification-senders/NotificationSenderFactory';
 import IJobResultRepository from '../repositories/IJobResultRepository';
+import FetcherFactory from './FetcherFactory';
+import IJob from './IJob';
 
 export default class Job implements IJob {
-    constructor(private jobResultRepository: IJobResultRepository<JobResult>, private notificationSettings: NotificationSetting[], private jobSetting: IJobSetting) {
+    constructor(private jobResultRepository: IJobResultRepository, private notificationSettings: NotificationSetting[], private jobSetting: IJobSetting) {
     }
 
-    async runAsync(): Promise<void> {
+    async run(): Promise<void> {
         try {
-            const prevResult = await this.jobResultRepository.readAsync(this.jobSetting.id);
+            const prevResult = await this.jobResultRepository.read(this.jobSetting.id);
             const resultText = await FetcherFactory.get(this.jobSetting).fetch();
             if (prevResult !== undefined && prevResult.result === resultText) {
                 this.jobResultRepository.create(JobResult.getUnupdatedInstance(this.jobSetting.id, resultText));
@@ -27,10 +25,11 @@ export default class Job implements IJob {
             this.jobResultRepository.create(result);
             this.sendNotification(prevResult, result);
         } catch (error) {
+            console.error(error);
             this.notificationSettings
                 .map(NotificationSenderFactory.get)
-                .forEach(sender => {
-                    sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, error instanceof Error ? error.message : i18n.__('Error.Unknown')));
+                .forEach(async sender => {
+                    await sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, error instanceof Error ? error.message : i18n.__('Error.Unknown')));
                 });
         }
     }
@@ -48,14 +47,17 @@ export default class Job implements IJob {
     private sendNotification(prevResult: JobResult | undefined, result: JobResult): void {
         this.notificationSettings
             .map(NotificationSenderFactory.get)
-            .forEach(sender => {
-                if (prevResult === undefined) {
-                    sender.send(Notification.info(this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted')));
-                } else if (result.error) {
-                    sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, result.error.message));
-                } else {
-                    sender.send(Notification.success(this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated')}\n\n${prevResult.result}\n↓\n${result.result}`));
-                }
+            .forEach(async sender => {
+                const notification = (() => {
+                    if (prevResult === undefined) {
+                        return Notification.info(this.jobSetting.name, this.jobSetting.url, i18n.__('Notification.MonitoringStarted'));
+                    } else if (result.error) {
+                        return Notification.error(this.jobSetting.name, this.jobSetting.url, result.error.message);
+                    } else {
+                        return Notification.success(this.jobSetting.name, this.jobSetting.url, `${i18n.__('Notification.WebSiteUpdated')}\n\n${prevResult.result}\n↓\n${result.result}`);
+                    }
+                })();
+                await sender.send(notification);
             });
     }
 }

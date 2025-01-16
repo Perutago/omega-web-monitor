@@ -3,7 +3,7 @@
 [日本語](https://github.com/Perutago/omega-web-monitor/blob/main/README-ja.md)
 
 ## 概要
-**Omega WEB Monitor**はWEBサイトの変更を監視し、コンテンツに変更があったらSlackに通知するアプリケーションです。**Omega WEB Monitor**が監視できるのは静的なコンテンツだけです。ログインを必要とするWEBサイトや、JavaScriptでロードされるコンテンツを監視することはできません。
+**Omega WEB Monitor**はWEBサイトの変更を監視し、コンテンツに変更があったらSlackに通知するアプリケーションです。**Omega WEB Monitor**が監視できるのは静的なコンテンツだけです。ログインを必要とするWEBサイトや、JavaScriptでロードされるコンテンツを監視することはできません。**Omega WEB Monitor**の実行にはDockerが必要です。
 
 ## 使い方
 
@@ -26,7 +26,7 @@ git cloneするか、またはZIP形式でダウンロードしてください�
 ```
 
 ### ./omega-web-monitor/settings/JobSetting.json
-次にWEBサイトを監視する設定を行います。
+WEBサイトを監視する設定を行います。
 ```
 [
     {
@@ -53,14 +53,27 @@ git cloneするか、またはZIP形式でダウンロードしてください�
 ]
 ```
 
+### ./omega-web-monitor/settings/NotificationSetting.json
+WEBサイトに変更があった場合の通知設定を行います。
+```
+[
+    {
+        // 通知設定のUUIDを設定してください。他の通知設定のUUIDと重複できません。
+        "id": "00000000-0000-0000-000000000000",
+
+        // 通知設定の名称を設定してください。
+        "name": "Sample Notification",
+
+        "type": "slack",
+
+        // SlackのWEBフックを設定してください。
+        "webhookUrl": "https://hooks.slack.com/services/ABCDEFGHI/ABCDEFGHIJK/012345678901234567890123"
+    }
+]
+```
+
 ### 実行
-Docker環境の場合は以下のコマンドを実行してください(おすすめ)。
+以下のコマンドを実行してください。
 ```
 docker compose up -d
-```
-Node.js環境の場合は以下のコマンドを実行してください。
-```
-npm install
-npm run build
-node ./dist/app/app.js
 ```

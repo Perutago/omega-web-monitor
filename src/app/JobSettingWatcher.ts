@@ -19,7 +19,7 @@ export default class JobSettingWatcher {
 
     async loadJobSetting(): Promise<void> {
         const jobSettingRepository = new JobSettingRepository();
-        const jobSettings = await jobSettingRepository.readAllAsync();
+        const jobSettings = await jobSettingRepository.readAll();
         this.cronJobs.push(...jobSettings.filter(jobSetting => jobSetting.cronTime && jobSetting.enabled).map(jobSetting => this.createCronJob(jobSetting)));
     }
 
