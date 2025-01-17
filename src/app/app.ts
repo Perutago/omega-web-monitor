@@ -5,10 +5,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import listEndpoints from 'express-list-endpoints';
 import helmet from 'helmet';
 import i18n from 'i18n';
-
 import Job from '../core/jobs/Job';
-import JobResultRepository from '../core/repositories/CsvJobResultRepository';
-import NotificationSettingRepository from '../core/repositories/JsonNotificationSettingRepository';
 import { ResultType } from '../core/Types';
 import JobSettingWatcher from './JobSettingWatcher';
 import jobResult from './routes/job-result/index';
@@ -45,10 +42,7 @@ i18n.configure({
 i18n.setLocale(config.get('locale'));
 
 const watcher = new JobSettingWatcher(async jobSetting => {
-    const jobResultRepository = new JobResultRepository();
-    const notificationSettingRepository = new NotificationSettingRepository();
-    const notificationSettings = await notificationSettingRepository.readAll();
-    const job = new Job(jobResultRepository, notificationSettings, jobSetting);
+    const job = new Job(jobSetting);
     job.run();
 });
 watcher.loadJobSetting();

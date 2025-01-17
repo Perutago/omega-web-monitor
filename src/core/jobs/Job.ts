@@ -1,16 +1,19 @@
 import crypto from 'crypto';
 import i18n from 'i18n';
 import IJobSetting from '../entities/IJobSetting';
-import NotificationSetting from '../entities/INotificationSetting';
 import JobResult, { JobResultId } from '../entities/JobResult';
 import Notification from '../notification-senders/Notification';
 import NotificationSenderFactory from '../notification-senders/NotificationSenderFactory';
-import IJobResultRepository from '../repositories/IJobResultRepository';
+import RepositoryFactory from '../repositories/RepositoryFactory';
 import FetcherFactory from './FetcherFactory';
 import IJob from './IJob';
 
 export default class Job implements IJob {
-    constructor(private jobResultRepository: IJobResultRepository, private notificationSettings: NotificationSetting[], private jobSetting: IJobSetting) {
+    private jobResultRepository = RepositoryFactory.getJobResult();
+
+    private notificationSettingRepository = RepositoryFactory.getNotificationSetting();
+
+    constructor(private jobSetting: IJobSetting) {
     }
 
     async run(): Promise<void> {
@@ -23,10 +26,11 @@ export default class Job implements IJob {
             }
             const result = this.createJobResult(resultText);
             this.jobResultRepository.create(result);
-            this.sendNotification(prevResult, result);
+            await this.sendNotification(prevResult, result);
         } catch (error) {
             console.error(error);
-            this.notificationSettings
+            const notificationSettings = await this.notificationSettingRepository.readAll();
+            notificationSettings
                 .map(NotificationSenderFactory.get)
                 .forEach(async sender => {
                     await sender.send(Notification.error(this.jobSetting.name, this.jobSetting.url, error instanceof Error ? error.message : i18n.__('Error.Unknown')));
@@ -44,8 +48,9 @@ export default class Job implements IJob {
         }
     }
 
-    private sendNotification(prevResult: JobResult | undefined, result: JobResult): void {
-        this.notificationSettings
+    private async sendNotification(prevResult: JobResult | undefined, result: JobResult): Promise<void> {
+        const notificationSettings = await this.notificationSettingRepository.readAll();
+        notificationSettings
             .map(NotificationSenderFactory.get)
             .forEach(async sender => {
                 const notification = (() => {

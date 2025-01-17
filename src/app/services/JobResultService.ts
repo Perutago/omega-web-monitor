@@ -1,11 +1,12 @@
 import JobResult from '../../core/entities/JobResult';
 import IRepository from '../../core/repositories/IJobResultRepository';
+import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
-export default class JobResultService<T extends IRepository> {
-    private repository: T;
+export default class JobResultService {
+    private repository: IRepository;
 
-    constructor(repository: new () => T) {
-        this.repository = new repository();
+    constructor() {
+        this.repository = RepositoryFactory.getJobResult();
     }
 
     async list(): ResultType<JobResult[]> {

@@ -4,14 +4,13 @@ import { body, param, validationResult } from 'express-validator';
 import helmet from 'helmet';
 
 import { allJobSettingTypes, JobSettingType } from '../../../core/entities/IJobSetting';
-import Repository from '../../../core/repositories/JsonJobSettingRepository';
 import Service from '../../services/JobSettingService';
 
 const app = express();
 app.use(helmet());
 app.use(cors());
 const router = express.Router();
-const service = new Service(Repository);
+const service = new Service();
 
 function handleError(req: Request, res: Response, next: NextFunction) {
     const errors = validationResult(req);

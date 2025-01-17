@@ -1,11 +1,12 @@
 import INotificationSetting from '../../core/entities/INotificationSetting';
 import IRepository from '../../core/repositories/INotificationSettingRepository';
+import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
-export default class NotificationSettingService<T extends IRepository> {
-    private repository: T;
+export default class NotificationSettingService {
+    private repository: IRepository;
 
-    constructor(repository: new () => T) {
-        this.repository = new repository();
+    constructor() {
+        this.repository = RepositoryFactory.getNotificationSetting();
     }
 
     async list(): ResultType<INotificationSetting[]> {

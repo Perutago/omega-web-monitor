@@ -12,4 +12,16 @@ export const ResultType = {
     SUCCESS: allResultTypes[3],
 } as const;
 
+export const allRepositoryTypes = [
+    'db',
+    'csv',
+    'json',
+] as const;
+export type RepositoryType = typeof allRepositoryTypes[number];
+export const RepositoryType = {
+    DB: allRepositoryTypes[0],
+    CSV: allRepositoryTypes[1],
+    JSON: allRepositoryTypes[2],
+} as const;
+
 export type Brand<K, T> = K & { _brand: T };

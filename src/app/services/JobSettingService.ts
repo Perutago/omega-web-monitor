@@ -1,11 +1,12 @@
 import IJobSetting from '../../core/entities/IJobSetting';
 import IRepository from '../../core/repositories/IJobSettingRepository';
+import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
-export default class JobSettingService<T extends IRepository> {
-    private repository: T;
+export default class JobSettingService {
+    private repository: IRepository;
 
-    constructor(repository: new () => T) {
-        this.repository = new repository();
+    constructor() {
+        this.repository = RepositoryFactory.getJobSetting();
     }
 
     async list(): ResultType<IJobSetting[]> {

@@ -1,5 +1,12 @@
 {
+    "jobSettingFilePath": "./settings/JobSetting.json",
     "locale": "en",
     "localesDirectory": "./dist/app/locales",
+    "notificationSettingFilePath": "./settings/NotificationSetting.json",
+    "repositoryType": {
+        "jobResult": "csv",
+        "jobSetting": "json",
+        "notificationSetting": "json"
+    },
     "timeZone": "UTC"
 }
