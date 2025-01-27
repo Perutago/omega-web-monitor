@@ -42,5 +42,6 @@ yarn.lock
 
 .vscode/
 results/
-settings/
+settings/JobSetting.json
+settings/NotificationSetting.json
 *.tsbuildinfo
