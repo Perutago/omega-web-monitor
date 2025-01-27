@@ -1,4 +1,4 @@
-import INotificationSetting from '../../core/entities/INotificationSetting';
+import IEntity from '../../core/entities/INotificationSetting';
 import IRepository from '../../core/repositories/INotificationSettingRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
@@ -9,14 +9,14 @@ export default class NotificationSettingService {
         this.repository = RepositoryFactory.getNotificationSetting();
     }
 
-    async list(): ResultType<INotificationSetting[]> {
+    async list(): ResultType<IEntity[]> {
         return {
             success: true,
             data: await this.repository.readAll(),
         };
     }
 
-    async get(id: string): ResultType<INotificationSetting> {
+    async get(id: string): ResultType<IEntity> {
         const settings = await this.repository.readAll();
         return {
             success: true,

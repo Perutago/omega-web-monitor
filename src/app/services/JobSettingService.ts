@@ -1,4 +1,4 @@
-import IJobSetting from '../../core/entities/IJobSetting';
+import IEntity from '../../core/entities/IJobSetting';
 import IRepository from '../../core/repositories/IJobSettingRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
@@ -9,14 +9,14 @@ export default class JobSettingService {
         this.repository = RepositoryFactory.getJobSetting();
     }
 
-    async list(): ResultType<IJobSetting[]> {
+    async list(): ResultType<IEntity[]> {
         return {
             success: true,
             data: await this.repository.readAll(),
         };
     }
 
-    async get(id: string): ResultType<IJobSetting> {
+    async get(id: string): ResultType<IEntity> {
         const settings = await this.repository.readAll();
         return {
             success: true,

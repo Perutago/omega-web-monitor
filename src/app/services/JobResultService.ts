@@ -1,4 +1,4 @@
-import JobResult from '../../core/entities/JobResult';
+import Entity from '../../core/entities/JobResult';
 import IRepository from '../../core/repositories/IJobResultRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
 
@@ -9,15 +9,14 @@ export default class JobResultService {
         this.repository = RepositoryFactory.getJobResult();
     }
 
-    async list(): ResultType<JobResult[]> {
+    async list(): ResultType<Entity[]> {
         return {
             success: true,
             data: await this.repository.readAll(),
         };
     }
 
-    async get(id: string): ResultType<JobResult> {
-        const jobResult = await this.repository.read(id);
+    async get(id: string): ResultType<Entity> {
         return {
             success: true,
             data: await this.repository.read(id),

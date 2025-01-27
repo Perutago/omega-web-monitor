@@ -1,9 +1,9 @@
-import JobResult from '../entities/JobResult';
+import IEntity from '../entities/JobResult';
 
 export default interface IJobResultRepository {
-    readAll(): Promise<JobResult[]>;
+    readAll(): Promise<IEntity[]>;
 
-    read(jobId: string): Promise<JobResult | undefined>;
+    read(jobId: string): Promise<IEntity | undefined>;
 
-    create(entity: JobResult): void;
+    create(entity: IEntity): void;
 }

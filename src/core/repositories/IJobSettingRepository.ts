@@ -1,13 +1,13 @@
-import IJobSetting from '../entities/IJobSetting';
+import IEntity from '../entities/IJobSetting';
 
 export default interface IJobSettingRepository {
-    readAll(): Promise<IJobSetting[]>;
+    readAll(): Promise<IEntity[]>;
 
-    read(id: string): Promise<IJobSetting | undefined>;
+    read(id: string): Promise<IEntity | undefined>;
 
-    create(entity: IJobSetting): Promise<void>;
+    create(entity: IEntity): Promise<void>;
 
-    update(entity: IJobSetting): Promise<void>;
+    update(entity: IEntity): Promise<void>;
 
     delete(id: string): Promise<void>;
 }
