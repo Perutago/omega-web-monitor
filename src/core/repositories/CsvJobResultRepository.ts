@@ -32,7 +32,7 @@ export default class CsvJobResultRepository implements IJobResultRepository {
         };
         csv
             .stringify([entity], options)
-            .pipe(fsSync.createWriteStream(`./results/JobResult_${entity.jobId}.csv`, { encoding: 'utf-8', flags: 'a' }));
+            .pipe(fsSync.createWriteStream(`./results/JobResult_${entity.jobSettingId}.csv`, { encoding: 'utf-8', flags: 'a' }));
     }
 
     private async readFile(filePath: string): Promise<Entity | undefined> {
