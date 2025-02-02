@@ -1,8 +1,8 @@
 import cors from 'cors';
+import { isValidCron } from 'cron-validator';
 import express, { NextFunction, Request, Response } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import helmet from 'helmet';
-
 import { allJobSettingTypes, JobSettingType } from '../../../core/entities/IJobSetting';
 import Service from '../../services/JobSettingService';
 
@@ -36,8 +36,8 @@ const validator = {
             .notEmpty()
             .isIn(allJobSettingTypes),
         body('cronTime')
-            .if(body('cronTime').notEmpty())
-            .isString(),
+            .notEmpty()
+            .custom(value => isValidCron(value)),
         body('url')
             .notEmpty()
             .isURL(),
@@ -63,8 +63,8 @@ const validator = {
             .notEmpty()
             .isIn(allJobSettingTypes),
         body('cronTime')
-            .if(body('cronTime').notEmpty())
-            .isString(),
+            .notEmpty()
+            .custom(value => isValidCron(value)),
         body('url')
             .notEmpty()
             .isURL(),
@@ -75,7 +75,7 @@ const validator = {
             .if(body('type').equals(JobSettingType.XPATH))
             .notEmpty(),
         body('regex')
-            .if(body('type').equals('regex'))
+            .if(body('type').equals(JobSettingType.REGEX))
             .notEmpty(),
         handleError,
     ],
