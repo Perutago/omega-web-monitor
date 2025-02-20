@@ -4,6 +4,10 @@ import INotificationSetting, { NotificationSettingId, NotificationSettingType } 
 export default class StandardOutputNotificationSetting implements INotificationSetting {
     public readonly type = NotificationSettingType.STANDARD_OUTPUT;
 
+    get key(): string {
+        return this.id;
+    }
+
     constructor(public id: NotificationSettingId, public name: string) {
     }
 }

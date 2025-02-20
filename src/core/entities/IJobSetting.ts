@@ -1,8 +1,9 @@
 import { UUID } from "crypto";
 
 import { Brand } from "../Types";
+import IEntity from "./IEntity";
 
-export default interface IJobSetting {
+export default interface IJobSetting extends IEntity {
     type: JobSettingType;
 
     id: JobSettingId;

@@ -1,7 +1,12 @@
 import crypto, { UUID } from 'crypto';
 import { Brand } from '../Types';
+import IEntity from './IEntity';
 
-export default class JobResult {
+export default class JobResult implements IEntity {
+    get key(): string {
+        return this.id;
+    }
+
     private constructor(public id: JobResultId, public jobSettingId: string, public createdAt: Date, public error: Error | null, public updated: boolean, public result: string | null) {
     }
 

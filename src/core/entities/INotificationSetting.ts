@@ -1,8 +1,9 @@
 import { UUID } from "crypto";
 
 import { Brand } from "../Types";
+import IEntity from "./IEntity";
 
-export default interface INotificationSetting {
+export default interface INotificationSetting extends IEntity {
     type: NotificationSettingType;
 
     id: NotificationSettingId;
