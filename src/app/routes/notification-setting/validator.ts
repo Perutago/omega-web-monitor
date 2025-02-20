@@ -21,6 +21,8 @@ const validator = {
             .if(body('type').equals(NotificationSettingType.SLACK))
             .notEmpty()
             .isURL(),
+        body('author')
+            .isLength({ min: 0, max: 256 }),
         handleError,
     ],
     update: [
@@ -37,6 +39,8 @@ const validator = {
             .if(body('type').equals(NotificationSettingType.SLACK))
             .notEmpty()
             .isURL(),
+        body('author')
+            .isLength({ min: 0, max: 256 }),
         handleError,
     ],
     remove: [

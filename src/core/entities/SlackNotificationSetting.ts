@@ -3,6 +3,6 @@ import INotificationSetting, { NotificationSettingId, NotificationSettingType } 
 export default class SlackNotificationSetting implements INotificationSetting {
     public readonly type = NotificationSettingType.SLACK;
 
-    constructor(public id: NotificationSettingId, public name: string, public webhookUrl: string) {
+    constructor(public id: NotificationSettingId, public name: string, public webhookUrl: string, public author: string) {
     }
 }

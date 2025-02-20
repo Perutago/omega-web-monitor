@@ -67,7 +67,10 @@ WEBサイトに変更があった場合の通知設定を行います。
         "type": "slack",
 
         // SlackのWEBフックを設定してください。
-        "webhookUrl": "https://hooks.slack.com/services/ABCDEFGHI/ABCDEFGHIJK/012345678901234567890123"
+        "webhookUrl": "https://hooks.slack.com/services/ABCDEFGHI/ABCDEFGHIJK/012345678901234567890123",
+
+        // 通知の発行者を設定してください。
+        "author": "Omega WEB Monitor"
     }
 ]
 ```

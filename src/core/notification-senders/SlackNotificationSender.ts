@@ -17,7 +17,7 @@ export default class SlackNotificationSender implements INotificationSender {
                 'attachments': [
                     {
                         'color': `${notification.type === ResultType.ERROR ? 'danger' : 'good'}`,
-                        'author_name': 'OmegaWebMonitor',
+                        'author_name': `${this.setting.author}`,
                         'title': `${notification.title}`,
                         'title_link': `${notification.url}`,
                         'text': `${notification.message}`,
