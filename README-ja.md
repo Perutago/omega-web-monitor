@@ -8,7 +8,7 @@
 ## 使い方
 
 ### ダウンロード
-git cloneするか、またはZIP形式でダウンロードしてください。
+`git clone`するか、またはZIP形式でダウンロードしてください。
 
 ### ./omega-web-monitor/config/default.json
 まず初めにアプリケーション全体の設定を行います。
