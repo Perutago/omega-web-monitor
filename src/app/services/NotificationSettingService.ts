@@ -1,6 +1,7 @@
 import IEntity from '../../core/entities/INotificationSetting';
 import IRepository from '../../core/repositories/INotificationSettingRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
+import { ResultType } from './ResultType';
 
 export default class NotificationSettingService {
     private repository: IRepository;

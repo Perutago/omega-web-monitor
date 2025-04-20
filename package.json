@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc --build && cp -r ./src/app/locales/ ./dist/app/locales",
         "clean": "tsc --build --clean",
-        "lint": "eslint src --ext ts,tsx --fix",
+        "lint": "npx eslint src",
         "start": "nodemon -L",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -31,6 +31,7 @@
         "request": "^2.88.2"
     },
     "devDependencies": {
+        "@eslint/js": "^9.25.0",
         "@types/config": "^3.3.5",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
@@ -40,12 +41,10 @@
         "@types/node": "^22.10.5",
         "@types/node-cron": "^3.0.11",
         "@types/request": "^2.48.12",
-        "@typescript-eslint/eslint-plugin": "^8.19.0",
-        "@typescript-eslint/parser": "^8.19.0",
-        "eslint": "^9.17.0",
-        "eslint-plugin-import": "^2.31.0",
+        "eslint": "^9.25.0",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2",
-        "typescript": "^5.7.2"
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.30.1"
     }
 }

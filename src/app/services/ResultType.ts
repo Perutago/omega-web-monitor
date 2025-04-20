@@ -1,4 +1,4 @@
-type ResultType<T> = Promise<{
+export type ResultType<T> = Promise<{
     success: boolean;
     data?: T | null;
 }>;

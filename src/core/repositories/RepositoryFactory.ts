@@ -8,50 +8,54 @@ import JsonJobSettingRepository from './JsonJobSettingRepository';
 import JsonNotificationSettingRepository from './JsonNotificationSettingRepository';
 
 export default class RepositoryFactory {
-    private static readonly repositories: Map<string, any> = new Map<string, any>();
+    private static readonly jobResultRepositories = new Map<string, IJobResultRepository>();
+
+    private static readonly jobSettingRepositories = new Map<string, IJobSettingRepository>();
+
+    private static readonly notificationSettingRepositories = new Map<string, INotificationSettingRepository>();
 
     static getJobResult(): IJobResultRepository {
         const key = 'jobResult';
-        if (!RepositoryFactory.repositories.has(key)) {
+        if (!RepositoryFactory.jobResultRepositories.has(key)) {
             const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
             switch (repositoryType) {
                 case RepositoryType.CSV:
-                    RepositoryFactory.repositories.set(key, new CsvJobResultRepository());
+                    RepositoryFactory.jobResultRepositories.set(key, new CsvJobResultRepository());
                     break;
                 default:
                     throw new Error(`Invalid repositoryType: ${repositoryType}`);
             }
         }
-        return RepositoryFactory.repositories.get(key);
+        return RepositoryFactory.jobResultRepositories.get(key)!;
     }
 
     static getJobSetting(): IJobSettingRepository {
         const key = 'jobSetting';
-        if (!RepositoryFactory.repositories.has(key)) {
+        if (!RepositoryFactory.jobSettingRepositories.has(key)) {
             const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
             switch (repositoryType) {
                 case RepositoryType.JSON:
-                    RepositoryFactory.repositories.set(key, new JsonJobSettingRepository());
+                    RepositoryFactory.jobSettingRepositories.set(key, new JsonJobSettingRepository());
                     break;
                 default:
                     throw new Error(`Invalid repositoryType: ${repositoryType}`);
             }
         }
-        return RepositoryFactory.repositories.get(key);
+        return RepositoryFactory.jobSettingRepositories.get(key)!;
     }
 
     static getNotificationSetting(): INotificationSettingRepository {
         const key = 'notificationSetting';
-        if (!RepositoryFactory.repositories.has(key)) {
+        if (!RepositoryFactory.notificationSettingRepositories.has(key)) {
             const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
             switch (repositoryType) {
                 case RepositoryType.JSON:
-                    RepositoryFactory.repositories.set(key, new JsonNotificationSettingRepository());
+                    RepositoryFactory.notificationSettingRepositories.set(key, new JsonNotificationSettingRepository());
                     break;
                 default:
                     throw new Error(`Invalid repositoryType: ${repositoryType}`);
             }
         }
-        return RepositoryFactory.repositories.get(key);
+        return RepositoryFactory.notificationSettingRepositories.get(key)!;
     }
 }

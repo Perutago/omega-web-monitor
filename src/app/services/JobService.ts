@@ -2,6 +2,7 @@ import i18n from 'i18n';
 import Job from '../../core/jobs/Job';
 import IJobSettingRepository from '../../core/repositories/IJobSettingRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
+import { ResultType } from './ResultType';
 
 export default class JobService {
     private jobSettingRepository: IJobSettingRepository;

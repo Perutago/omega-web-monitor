@@ -60,7 +60,7 @@ function clientErrorHandler(err: Error, req: Request, res: Response, next: NextF
     }
 }
 
-function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
+function errorHandler(err: Error, req: Request, res: Response): void {
     res.status(500);
     res.render(ResultType.ERROR, { error: err });
 }

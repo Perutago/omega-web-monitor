@@ -1,6 +1,7 @@
 import IEntity from '../../core/entities/IJobSetting';
 import IRepository from '../../core/repositories/IJobSettingRepository';
 import RepositoryFactory from '../../core/repositories/RepositoryFactory';
+import { ResultType } from './ResultType';
 
 export default class JobSettingService {
     private repository: IRepository;
