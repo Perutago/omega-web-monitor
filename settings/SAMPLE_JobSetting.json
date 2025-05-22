@@ -6,6 +6,7 @@
         "cronTime": "0 20 * * *",
         "url": "https://github.com/Perutago/omega-web-monitor",
         "enabled": true,
-        "xpath": "/html/body/div[1]/div[5]/div/main/div/div[1]/div[2]/ul/li[3]/div/div[1]/form/button/span[2]/text()"
+        "xpath": "/html/body/div[1]/div[5]/div/main/div/div[1]/div[2]/ul/li[3]/div/div[1]/form/button/span[2]/text()",
+        "notificationSettingIds": ["sample-notification-id-1", "another-sample-id"]
     }
 ]

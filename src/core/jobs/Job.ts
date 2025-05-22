@@ -1,5 +1,6 @@
 import i18n from 'i18n';
 import IJobSetting from '../entities/IJobSetting';
+import INotificationSetting from '../entities/INotificationSetting';
 import JobResult from '../entities/JobResult';
 import Notification from '../notification-senders/Notification';
 import NotificationSenderFactory from '../notification-senders/NotificationSenderFactory';
@@ -36,8 +37,26 @@ export default class Job implements IJob {
     }
 
     private async sendNotification(notification: Notification): Promise<void> {
-        const notificationSettings = await this.notificationSettingRepository.readAll();
-        notificationSettings
+        const { notificationSettingIds } = this.jobSetting;
+
+        if (!notificationSettingIds || notificationSettingIds.length === 0) {
+            return;
+        }
+
+        const notificationSettingsPromises = notificationSettingIds.map(id =>
+            this.notificationSettingRepository.read(id)
+        );
+        const resolvedNotificationSettings = await Promise.all(notificationSettingsPromises);
+
+        const validNotificationSettings = resolvedNotificationSettings.filter(
+            setting => setting !== undefined
+        ) as INotificationSetting[];
+
+        if (validNotificationSettings.length === 0) {
+            return;
+        }
+
+        validNotificationSettings
             .map(NotificationSenderFactory.get)
             .forEach(async sender => {
                 await sender.send(notification);
