@@ -47,6 +47,12 @@ Configure the settings for monitoring websites.
 
         "enabled": true,
 
+        // Set the ID of notification setting.
+        "notificationSettingIds": [
+            "00000000-0000-0000-0000-000000000000",
+            "00000000-0000-0000-0000-000000000001"
+        ],
+
         // Set the XPath expression to monitor. You can obtain the XPath using your browser's developer tools.
         "xpath": "/html/body/div[1]/div[5]/div/main/div/div[1]/div[2]/ul/li[3]/div/div[1]/form/button/span[2]/text()"
     }

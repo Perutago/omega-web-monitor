@@ -47,6 +47,12 @@ WEBサイトを監視する設定を行います。
 
         "enabled": true,
 
+        // 通知設定のIDを設定してください。
+        "notificationSettingIds": [
+            "00000000-0000-0000-0000-000000000000",
+            "00000000-0000-0000-0000-000000000001"
+        ],
+
         // 監視対象のXPathを設定してください。XPathはChromeの開発者ツールを使って取得できます。
         "xpath": "/html/body/div[1]/div[5]/div/main/div/div[1]/div[2]/ul/li[3]/div/div[1]/form/button/span[2]/text()"
     }
