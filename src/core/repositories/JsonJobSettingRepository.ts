@@ -1,5 +1,5 @@
 import config from 'config';
-import Entity from '../entities/IJobSetting';
+import Entity, { JobSettingId } from '../entities/IJobSetting';
 import BaseJsonRepository from './BaseJsonRepository';
 import IJobSettingRepository from './IJobSettingRepository';
 
@@ -14,23 +14,24 @@ export default class JsonJobSettingRepository extends BaseJsonRepository<Entity>
 
     async read(key: string): Promise<Entity | undefined> {
         const entities = await this.readAll();
-        return entities.find(e => e.key === key);
+        return entities.find(e => e.id === key);
     }
 
     async create(entity: Entity): Promise<void> {
         const entities = await this.readAll();
+        entity.id = entity.id ?? JobSettingId.of(crypto.randomUUID())
         await this.writeFile(entities.concat([entity]));
     }
 
     async update(entity: Entity): Promise<void> {
         const entities = await this.readAll();
-        if (this.hasEntity(entities, entity.key)) {
-            await this.writeFile(entities.filter(e => e.key !== entity.key).concat([entity]));
+        if (entities.some(e => e.id === entity.id)) {
+            await this.writeFile(entities.filter(e => e.id !== entity.id).concat([entity]));
         }
     }
 
     async delete(key: string): Promise<void> {
         const entities = await this.readAll();
-        await this.writeFile(entities.filter(e => e.key !== key));
+        await this.writeFile(entities.filter(e => e.id !== key));
     }
 }

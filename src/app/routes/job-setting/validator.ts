@@ -26,6 +26,12 @@ const validator = {
         body('enabled')
             .notEmpty()
             .isBoolean(),
+        body('notificationSettingIds')
+            .notEmpty()
+            .isArray(),
+        body('notificationSettingIds.*')
+            .notEmpty()
+            .isUUID(),
         body('xpath')
             .if(body('type').equals(JobSettingType.XPATH))
             .notEmpty(),

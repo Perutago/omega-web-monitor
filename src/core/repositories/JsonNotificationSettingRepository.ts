@@ -14,7 +14,7 @@ export default class JsonNotificationSettingRepository extends BaseJsonRepositor
 
     async read(key: string): Promise<Entity | undefined> {
         const entities = await this.readAll();
-        return entities.find(e => e.key === key);
+        return entities.find(e => e.id === key);
     }
 
     async create(entity: Entity): Promise<void> {
@@ -24,13 +24,13 @@ export default class JsonNotificationSettingRepository extends BaseJsonRepositor
 
     async update(entity: Entity): Promise<void> {
         const entities = await this.readAll();
-        if (this.hasEntity(entities, entity.key)) {
-            await this.writeFile(entities.filter(e => e.key !== entity.key).concat([entity]));
+        if (entities.some(e => e.id === entity.id)) {
+            await this.writeFile(entities.filter(e => e.id !== entity.id).concat([entity]));
         }
     }
 
     async delete(key: string): Promise<void> {
         const entities = await this.readAll();
-        await this.writeFile(entities.filter(e => e.key !== key));
+        await this.writeFile(entities.filter(e => e.id !== key));
     }
 }

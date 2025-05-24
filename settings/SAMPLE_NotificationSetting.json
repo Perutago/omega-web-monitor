@@ -1,6 +1,6 @@
 [
     {
-        "id": "00000000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000000",
         "name": "Sample Notification",
         "type": "slack",
         "webhookUrl": "https://hooks.slack.com/services/ABCDEFGHI/ABCDEFGHIJK/012345678901234567890123",

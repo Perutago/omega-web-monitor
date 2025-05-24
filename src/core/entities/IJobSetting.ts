@@ -1,10 +1,9 @@
 import { UUID } from "crypto";
 
 import { Brand } from "../Types";
-import IEntity from "./IEntity";
 import { NotificationSettingId } from "./INotificationSetting";
 
-export default interface IJobSetting extends IEntity {
+export default interface IJobSetting {
     type: JobSettingType;
 
     id: JobSettingId;
@@ -17,7 +16,7 @@ export default interface IJobSetting extends IEntity {
 
     enabled: boolean;
 
-    notificationSettingIds?: NotificationSettingId[];
+    notificationSettingIds: NotificationSettingId[];
 }
 
 export const allJobSettingTypes = [
