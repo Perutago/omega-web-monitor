@@ -3,15 +3,15 @@
 [日本語](https://github.com/Perutago/omega-web-monitor/blob/main/README-ja.md)
 
 ## Overview
-**Omega WEB Monitor** is an application that monitors changes to websites and sends notifications to Slack when content changes are detected. **Omega WEB Monitor** is limited to monitoring static content. It cannot monitor websites that require login or content loaded dynamically via JavaScript. Docker is required to run **Omega WEB Monitor**.
+**Omega WEB Monitor** is an application that monitors changes to websites and sends a Slack notification when it detects a change in the content. **Omega WEB Monitor** can only monitor static content. It cannot monitor websites that require a login or content that is loaded by JavaScript. Docker is required to run **Omega WEB Monitor**.
 
 ## Usage
 
 ### Download
-Clone the repository using `git clone` or download it as a ZIP file.
+Clone this repository or download it as a ZIP file.
 
 ### ./omega-web-monitor/config/default.json
-First, configure the general application settings.
+First, you need to configure the application.
 ```
 {
     // Set the language. Supported languages are "en" and "ja-JP".
@@ -30,41 +30,41 @@ Configure the settings for monitoring websites.
 ```
 [
     {
-        // Set the UUID for the job. This must be unique.
+        // Set the UUID for the job. It must not be duplicated with other jobs.
         "id": "00000000-0000-0000-0000-000000000000",
 
-        // Set the job name.
+        // Set the name of the job.
         "name": "Omega WEB Monitor star count",
 
         "type": "xpath",
 
-        // Set the job execution time in cron format.
+        // Set the time to execute the job in cron format.
         // https://www.npmjs.com/package/cron
         "cronTime": "0 0 20 * * *",
 
-        // Set the URL of the website to monitor.
+        // Set the URL of the WEB site to be monitored.
         "url": "https://github.com/Perutago/omega-web-monitor",
 
         "enabled": true,
 
-        // Set the ID of notification setting.
+        // Set the ID of the notification setting.
         "notificationSettingIds": [
             "00000000-0000-0000-0000-000000000000",
             "00000000-0000-0000-0000-000000000001"
         ],
 
-        // Set the XPath expression to monitor. You can obtain the XPath using your browser's developer tools.
+        // Set the XPath of the monitoring target. You can get the XPath using the developer tools of Chrome.
         "xpath": "/html/body/div[1]/div[5]/div/main/div/div[1]/div[2]/ul/li[3]/div/div[1]/form/button/span[2]/text()"
     }
 ]
 ```
 
 ### ./omega-web-monitor/settings/NotificationSetting.json
-Configure the notification settings for website changes.
+This is the setting for notification when a change is detected in a WEB site.
 ```
 [
     {
-        // Set the UUID for the notification setting. This must be unique.
+        // Set the UUID for the notification setting. It must not be duplicated with other notification settings.
         "id": "00000000-0000-0000-0000-000000000000",
 
         // Set the name of the notification setting.
@@ -72,17 +72,17 @@ Configure the notification settings for website changes.
 
         "type": "slack",
 
-        // Set the Slack webhook URL.
+        // Set the Slack webhook.
         "webhookUrl": "https://hooks.slack.com/services/ABCDEFGHI/ABCDEFGHIJK/012345678901234567890123",
 
-        // Set the author of the notification.
+        // Set the issuer of the notification.
         "author": "Omega WEB Monitor"
     }
 ]
 ```
 
 ### Execution
-Run the following command:
+Execute the following command:
 ```
 docker compose up -d
 ```
