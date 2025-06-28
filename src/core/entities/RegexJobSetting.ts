@@ -13,7 +13,4 @@ export default class RegexJobSetting implements IJobSetting {
         public notificationSettingIds: NotificationSettingId[],
         public regex: string
     ) { }
-    get key(): string {
-        throw new Error('Method not implemented.');
-    }
 }

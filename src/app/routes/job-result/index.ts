@@ -1,12 +1,7 @@
-import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import helmet from 'helmet';
 import Service from '../../services/JobResultService';
 import validator from './validator';
 
-const app = express();
-app.use(helmet());
-app.use(cors());
 const router = express.Router();
 const service = new Service();
 

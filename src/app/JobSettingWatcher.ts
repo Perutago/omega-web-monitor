@@ -1,7 +1,7 @@
 import config from 'config';
 import { CronJob } from 'cron';
 import fsSync from 'fs';
-import { default as IJobSetting, default as JobSetting } from '../core/entities/IJobSetting';
+import IJobSetting from '../core/entities/IJobSetting';
 import RepositoryFactory from '../core/repositories/RepositoryFactory';
 
 export default class JobSettingWatcher {
@@ -25,7 +25,7 @@ export default class JobSettingWatcher {
         this.cronJobs.splice(0);
     }
 
-    private createCronJob(jobSetting: JobSetting): CronJob {
+    private createCronJob(jobSetting: IJobSetting): CronJob {
         return CronJob.from({
             cronTime: jobSetting.cronTime,
             onTick: async () => {

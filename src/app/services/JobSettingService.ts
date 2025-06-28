@@ -18,10 +18,9 @@ export default class JobSettingService {
     }
 
     async get(id: string): ResultType<IEntity> {
-        const settings = await this.repository.readAll();
         return {
             success: true,
-            data: settings.find(setting => setting.id === id) ?? null
+            data: await this.repository.read(id) ?? null
         };
     }
 

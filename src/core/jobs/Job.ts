@@ -38,11 +38,10 @@ export default class Job implements IJob {
     private async sendNotification(notification: Notification): Promise<void> {
         const { notificationSettingIds } = this.jobSetting;
         const notificationSettings = await Promise.all(notificationSettingIds.map(id => this.notificationSettingRepository.read(id)));
-        notificationSettings
+        const sendPromises = notificationSettings
             .filter(setting => setting !== undefined)
             .map(NotificationSenderFactory.get)
-            .forEach(async sender => {
-                await sender.send(notification);
-            });
+            .map(async sender => sender.send(notification));
+        await Promise.all(sendPromises);
     }
 }

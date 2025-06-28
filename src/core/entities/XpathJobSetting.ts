@@ -13,7 +13,4 @@ export default class XpathJobSetting implements IJobSetting {
         public notificationSettingIds: NotificationSettingId[],
         public xpath: string
     ) { }
-    get key(): string {
-        throw new Error('Method not implemented.');
-    }
 }
