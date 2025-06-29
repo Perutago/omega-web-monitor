@@ -1,5 +1,4 @@
-import config from 'config';
-import { RepositoryType } from '../Types';
+import AppConfig from '../../app/config/AppConfig';
 import CsvJobResultRepository from './CsvJobResultRepository';
 import IJobResultRepository from "./IJobResultRepository";
 import IJobSettingRepository from './IJobSettingRepository';
@@ -17,9 +16,9 @@ export default class RepositoryFactory {
     static getJobResult(): IJobResultRepository {
         const key = 'jobResult';
         if (!RepositoryFactory.jobResultRepositories.has(key)) {
-            const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
+            const repositoryType = AppConfig.repositoryType.jobResult;
             switch (repositoryType) {
-                case RepositoryType.CSV:
+                case 'csv':
                     RepositoryFactory.jobResultRepositories.set(key, new CsvJobResultRepository());
                     break;
                 default:
@@ -32,9 +31,9 @@ export default class RepositoryFactory {
     static getJobSetting(): IJobSettingRepository {
         const key = 'jobSetting';
         if (!RepositoryFactory.jobSettingRepositories.has(key)) {
-            const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
+            const repositoryType = AppConfig.repositoryType.jobSetting;
             switch (repositoryType) {
-                case RepositoryType.JSON:
+                case 'json':
                     RepositoryFactory.jobSettingRepositories.set(key, new JsonJobSettingRepository());
                     break;
                 default:
@@ -47,9 +46,9 @@ export default class RepositoryFactory {
     static getNotificationSetting(): INotificationSettingRepository {
         const key = 'notificationSetting';
         if (!RepositoryFactory.notificationSettingRepositories.has(key)) {
-            const repositoryType = config.get(`repositoryType.${key}`) as RepositoryType;
+            const repositoryType = AppConfig.repositoryType.notificationSetting;
             switch (repositoryType) {
-                case RepositoryType.JSON:
+                case 'json':
                     RepositoryFactory.notificationSettingRepositories.set(key, new JsonNotificationSettingRepository());
                     break;
                 default:

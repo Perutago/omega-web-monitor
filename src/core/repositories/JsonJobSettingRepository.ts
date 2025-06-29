@@ -1,11 +1,11 @@
-import config from 'config';
+import AppConfig from '../../app/config/AppConfig';
 import Entity, { JobSettingId } from '../entities/IJobSetting';
 import BaseJsonRepository from './BaseJsonRepository';
 import IJobSettingRepository from './IJobSettingRepository';
 
 export default class JsonJobSettingRepository extends BaseJsonRepository<Entity> implements IJobSettingRepository {
     get jsonFilePath(): string {
-        return config.get('jobSettingFilePath');
+        return AppConfig.jobSettingFilePath;
     }
 
     async readAll(): Promise<Entity[]> {

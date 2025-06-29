@@ -1,11 +1,11 @@
-import config from 'config';
+import AppConfig from '../../app/config/AppConfig';
 import Entity from '../entities/INotificationSetting';
 import BaseJsonRepository from './BaseJsonRepository';
 import INotificationSettingRepository from './INotificationSettingRepository';
 
 export default class JsonNotificationSettingRepository extends BaseJsonRepository<Entity> implements INotificationSettingRepository {
     get jsonFilePath(): string {
-        return config.get('notificationSettingFilePath');
+        return AppConfig.notificationSettingFilePath;
     }
 
     async readAll(): Promise<Entity[]> {

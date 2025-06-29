@@ -1,11 +1,11 @@
 import bodyParser from 'body-parser';
-import config from 'config';
 import cors from 'cors';
 import express from 'express';
 import listEndpoints from 'express-list-endpoints';
 import helmet from 'helmet';
 import i18n from 'i18n';
 import Job from '../core/jobs/Job';
+import AppConfig from './config/AppConfig';
 import JobSettingWatcher from './JobSettingWatcher';
 import { errorHandler } from './middlewares/errorHandler';
 import jobResult from './routes/job-result/index';
@@ -34,10 +34,10 @@ app.listen(port, () => {
 
 i18n.configure({
     locales: ['en', 'ja-JP'],
-    directory: config.get('localesDirectory'),
+    directory: AppConfig.localesDirectory,
     updateFiles: false,
 });
-i18n.setLocale(config.get('locale'));
+i18n.setLocale(AppConfig.locale);
 
 const watcher = new JobSettingWatcher(async jobSetting => {
     const job = new Job(jobSetting);
