@@ -1,13 +1,13 @@
 import bodyParser from 'body-parser';
 import config from 'config';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import listEndpoints from 'express-list-endpoints';
 import helmet from 'helmet';
 import i18n from 'i18n';
 import Job from '../core/jobs/Job';
-import { ResultType } from '../core/Types';
 import JobSettingWatcher from './JobSettingWatcher';
+import { errorHandler } from './middlewares/errorHandler';
 import jobResult from './routes/job-result/index';
 import jobSetting from './routes/job-setting/index';
 import job from './routes/job/index';
@@ -24,8 +24,6 @@ app.use(`${rootUrl}job`, job);
 app.use(`${rootUrl}job-result`, jobResult);
 app.use(`${rootUrl}job-setting`, jobSetting);
 app.use(`${rootUrl}notification-setting`, notificationSetting);
-app.use(logErrors);
-app.use(clientErrorHandler);
 app.use(errorHandler);
 const port = process.env.PORT || 3000;
 
@@ -46,21 +44,3 @@ const watcher = new JobSettingWatcher(async jobSetting => {
     job.run();
 });
 watcher.loadJobSetting();
-
-function logErrors(err: Error, req: Request, res: Response, next: NextFunction): void {
-    console.error(err.stack);
-    next(err);
-}
-
-function clientErrorHandler(err: Error, req: Request, res: Response, next: NextFunction): void {
-    if (req.xhr) {
-        res.status(500).send({ error: 'Something failed!' });
-    } else {
-        next(err);
-    }
-}
-
-function errorHandler(err: Error, req: Request, res: Response): void {
-    res.status(500);
-    res.render(ResultType.ERROR, { error: err });
-}
