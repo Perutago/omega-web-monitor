@@ -9,7 +9,11 @@ export default class RegexFetcher implements IFetcher {
     }
 
     async fetch(): Promise<string> {
-        const response = await axios.get(this.setting.url);
+        const instance = axios.create({
+            baseURL: this.setting.url,
+            headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' }
+        });
+        const response = await instance.get(this.setting.url);
         if (typeof response.data !== 'string') {
             throw new Error(i18n.__('Error.Unknown'));
         }
